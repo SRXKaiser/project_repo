@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environments
+.venv/
+venv/
+
+# Environment variables / secrets
+.env
+backend/.env
+
+# VS Code
+.vscode/
+
+# PyCharm
+.idea/
+
+# PostgreSQL
+*.sql.backup
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Frontend)
+node_modules/
+frontend/node_modules/
+frontend/dist/
+
+# Testing
+.pytest_cache/
+.coverage
+
+# Alembic / Python cache
+**/__pycache__/
