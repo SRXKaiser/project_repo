@@ -5,6 +5,7 @@ from app.db.database import engine
 
 from app.api.routes.auth import router as auth_router
 from app.api.routes.usuarios import router as usuarios_router
+from app.api.routes.proyectos import router as proyectos_router
 app = FastAPI(
     title="Project Repository API",
     description="API para el repositorio de proyectos de investigación del ITCJ",
@@ -13,6 +14,8 @@ app = FastAPI(
 
 app.include_router(auth_router)
 app.include_router(usuarios_router)
+app.include_router(proyectos_router)
+
 
 @app.get("/")
 def root():
