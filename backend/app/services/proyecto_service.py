@@ -7,7 +7,7 @@ from app.models.enums import EstadoProyecto, TipoParticipacion
 from app.models.proyecto import Proyecto
 from app.models.proyecto_autor import ProyectoAutor
 from app.models.usuario import Usuario
-
+from app.models.archivo import Archivo
 from app.models.area_tematica import AreaTematica
 from app.models.palabra_clave import PalabraClave
 from app.models.proyecto_area import ProyectoArea
@@ -79,7 +79,7 @@ def listar_proyectos(
     consulta = (
         select(Proyecto)
         .where(
-            Proyecto.estado == EstadoProyecto.APROBADO
+            Proyecto.estado == EstadoProyecto.PUBLICADO
         )
         .order_by(Proyecto.fecha_publicacion.desc())
         .offset(skip)
@@ -117,7 +117,7 @@ def obtener_proyecto_publico(
     proyecto = db.scalar(
         select(Proyecto).where(
             Proyecto.id_proyecto == id_proyecto,
-            Proyecto.estado == EstadoProyecto.APROBADO,
+            Proyecto.estado == EstadoProyecto.PUBLICADO,
         )
     )
 
@@ -328,6 +328,18 @@ def construir_detalle_proyecto(
         for autor, tipo_participacion, orden_autoria
         in filas_autores
     ]
+    archivos = list(
+    db.scalars(
+        select(Archivo)
+        .where(
+            Archivo.id_proyecto
+            == proyecto.id_proyecto
+        )
+        .order_by(
+            Archivo.fecha_subida.asc()
+        )
+    ).all()
+)
 
     # RESPUESTA
 
@@ -343,6 +355,7 @@ def construir_detalle_proyecto(
         areas_tematicas=areas,
         palabras_clave=palabras,
         autores=autores,
+        archivos=archivos,
     )
 
 def obtener_detalle_publico(

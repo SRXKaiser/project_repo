@@ -99,7 +99,7 @@ def es_administrador(
         select(UsuarioRol)
         .join(
             Rol,
-            UsuarioRol.id_rol == Rol.id_rol
+            UsuarioRol.id_rol == Rol.id_rol,
         )
         .where(
             UsuarioRol.id_usuario == usuario.id_usuario,
@@ -128,12 +128,9 @@ def es_jefe_departamento(
     id_departamento: int,
 ) -> bool:
 
-    if usuario.tipo_usuario != TipoUsuario.DOCENTE:
-        return False
-
     docente = db.get(
         Docente,
-        usuario.id_usuario
+        usuario.id_usuario,
     )
 
     if docente is None:

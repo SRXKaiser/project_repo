@@ -3,9 +3,10 @@ from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field
 
 from app.models.enums import EstadoProyecto
-
+from app.schemas.archivo import ArchivoResponse
 from app.schemas.area_tematica import AreaTematicaResponse
 from app.schemas.palabra_clave import PalabraClaveResponse
+
 
 
 class ProyectoCreate(BaseModel):
@@ -64,3 +65,4 @@ class ProyectoDetalleResponse(ProyectoResponse):
     areas_tematicas: list[AreaTematicaResponse]
     palabras_clave: list[PalabraClaveResponse]
     autores: list[AutorProyectoResponse]
+    archivos: list[ArchivoResponse]

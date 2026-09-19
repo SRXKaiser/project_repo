@@ -8,6 +8,11 @@ from app.api.routes.usuarios import router as usuarios_router
 from app.api.routes.proyectos import router as proyectos_router
 from app.api.routes.areas_tematicas import router as areas_tematicas_router
 from app.api.routes.palabras_clave import router as palabras_clave_router
+from app.api.routes.archivos import router as archivos_router
+from app.api.routes.workflow import router as workflow_router
+from app.api.routes.proyecto_autores import (
+    router as proyecto_autores_router,
+)
 app = FastAPI(
     title="Project Repository API",
     description="API para el repositorio de proyectos de investigación del ITCJ",
@@ -19,6 +24,9 @@ app.include_router(usuarios_router)
 app.include_router(proyectos_router)
 app.include_router(areas_tematicas_router)
 app.include_router(palabras_clave_router)
+app.include_router(proyecto_autores_router)
+app.include_router(archivos_router)
+app.include_router(workflow_router)
 
 @app.get("/")
 def root():
