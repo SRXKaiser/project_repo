@@ -328,17 +328,18 @@ def construir_detalle_proyecto(
         for autor, tipo_participacion, orden_autoria
         in filas_autores
     ]
+
     archivos = list(
-    db.scalars(
-        select(Archivo)
-        .where(
-            Archivo.id_proyecto
-            == proyecto.id_proyecto
-        )
-        .order_by(
-            Archivo.fecha_subida.asc()
-        )
-    ).all()
+        db.scalars(
+            select(Archivo)
+            .where(
+                Archivo.id_proyecto
+                == proyecto.id_proyecto
+            )
+            .order_by(
+                Archivo.fecha_subida.asc()
+            )
+        ).all()
 )
 
     # RESPUESTA

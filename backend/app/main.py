@@ -10,8 +10,14 @@ from app.api.routes.areas_tematicas import router as areas_tematicas_router
 from app.api.routes.palabras_clave import router as palabras_clave_router
 from app.api.routes.archivos import router as archivos_router
 from app.api.routes.workflow import router as workflow_router
+from app.api.routes.admin_usuarios import (
+    router as admin_usuarios_router,
+)
 from app.api.routes.proyecto_autores import (
     router as proyecto_autores_router,
+)
+from app.api.routes.admin_responsables import (
+    router as admin_responsables_router,
 )
 app = FastAPI(
     title="Project Repository API",
@@ -27,6 +33,8 @@ app.include_router(palabras_clave_router)
 app.include_router(proyecto_autores_router)
 app.include_router(archivos_router)
 app.include_router(workflow_router)
+app.include_router(admin_usuarios_router)
+app.include_router(admin_responsables_router)
 
 @app.get("/")
 def root():
