@@ -6,6 +6,7 @@ from app.db.database import get_db
 from app.models.usuario import Usuario
 from app.schemas.proyecto import (
     ProyectoCreate,
+    ProyectoDetalleResponse,
     ProyectoResponse,
     ProyectoUpdate,
 )
@@ -15,8 +16,12 @@ from app.services.proyecto_service import (
     eliminar_proyecto,
     listar_mis_proyectos,
     listar_proyectos,
+    obtener_detalle_publico,
+    obtener_mi_proyecto_detalle,
     obtener_proyecto_publico,
 )
+
+
 
 
 router = APIRouter(
@@ -86,6 +91,35 @@ def mis_proyectos(
         usuario=usuario,
         skip=skip,
         limit=limit,
+    )
+
+@router.get(
+    "/mis-proyectos/{id_proyecto}",
+    response_model=ProyectoDetalleResponse,
+)
+def mi_proyecto_detalle(
+    id_proyecto: int,
+    db: Session = Depends(get_db),
+    usuario: Usuario = Depends(get_current_user),
+):
+    return obtener_mi_proyecto_detalle(
+        db=db,
+        id_proyecto=id_proyecto,
+        usuario=usuario,
+    )
+
+
+@router.get(
+    "/{id_proyecto}/detalle",
+    response_model=ProyectoDetalleResponse,
+)
+def detalle_publico(
+    id_proyecto: int,
+    db: Session = Depends(get_db),
+):
+    return obtener_detalle_publico(
+        db=db,
+        id_proyecto=id_proyecto,
     )
 
 @router.get(

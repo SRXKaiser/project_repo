@@ -7,8 +7,18 @@ from app.models.enums import EstadoProyecto, TipoParticipacion
 from app.models.proyecto import Proyecto
 from app.models.proyecto_autor import ProyectoAutor
 from app.models.usuario import Usuario
-from app.schemas.proyecto import ProyectoCreate, ProyectoUpdate
 
+from app.models.area_tematica import AreaTematica
+from app.models.palabra_clave import PalabraClave
+from app.models.proyecto_area import ProyectoArea
+from app.models.proyecto_palabra_clave import ProyectoPalabraClave
+
+from app.schemas.proyecto import (
+    AutorProyectoResponse,
+    ProyectoCreate,
+    ProyectoDetalleResponse,
+    ProyectoUpdate,
+)
 def crear_proyecto(
     db: Session,
     datos: ProyectoCreate,
@@ -119,10 +129,9 @@ def obtener_proyecto_publico(
 
     return proyecto
 
-def actualizar_proyecto(
+def verificar_proyecto_editable(
     db: Session,
     id_proyecto: int,
-    datos: ProyectoUpdate,
     usuario: Usuario,
 ) -> Proyecto:
 
@@ -131,19 +140,32 @@ def actualizar_proyecto(
         id_proyecto=id_proyecto,
     )
 
-    # Solo el creador puede modificarlo.
     if proyecto.creado_por != usuario.id_usuario:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="No tienes permiso para modificar este proyecto",
         )
 
-    # Solo los borradores pueden editarse.
     if proyecto.estado != EstadoProyecto.BORRADOR:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail="Solo se pueden modificar proyectos en estado BORRADOR",
         )
+
+    return proyecto
+
+def actualizar_proyecto(
+    db: Session,
+    id_proyecto: int,
+    datos: ProyectoUpdate,
+    usuario: Usuario,
+) -> Proyecto:
+
+    proyecto = verificar_proyecto_editable(
+    db=db,
+    id_proyecto=id_proyecto,
+    usuario=usuario,
+    )
 
     cambios = datos.model_dump(
         exclude_unset=True
@@ -191,24 +213,11 @@ def eliminar_proyecto(
     usuario: Usuario,
 ) -> None:
 
-    proyecto = obtener_proyecto(
-        db=db,
-        id_proyecto=id_proyecto,
+    proyecto = verificar_proyecto_editable(
+    db=db,
+    id_proyecto=id_proyecto,
+    usuario=usuario,
     )
-
-    # Solo el creador puede eliminarlo.
-    if proyecto.creado_por != usuario.id_usuario:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="No tienes permiso para eliminar este proyecto",
-        )
-
-    # Solo los borradores pueden eliminarse.
-    if proyecto.estado != EstadoProyecto.BORRADOR:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail="Solo se pueden eliminar proyectos en estado BORRADOR",
-        )
 
     try:
         db.delete(proyecto)
@@ -245,4 +254,138 @@ def listar_mis_proyectos(
 
     return list(
         db.scalars(consulta).all()
+    )
+
+
+def construir_detalle_proyecto(
+    db: Session,
+    proyecto: Proyecto,
+) -> ProyectoDetalleResponse:
+
+    # AREAS TEMATICAS
+
+    areas = list(
+        db.scalars(
+            select(AreaTematica)
+            .join(
+                ProyectoArea,
+                ProyectoArea.id_area == AreaTematica.id_area,
+            )
+            .where(
+                ProyectoArea.id_proyecto == proyecto.id_proyecto
+            )
+            .order_by(AreaTematica.nombre)
+        ).all()
+    )
+
+    # PALABRAS CLAVE
+
+    palabras = list(
+        db.scalars(
+            select(PalabraClave)
+            .join(
+                ProyectoPalabraClave,
+                ProyectoPalabraClave.id_palabra_clave
+                == PalabraClave.id_palabra_clave,
+            )
+            .where(
+                ProyectoPalabraClave.id_proyecto
+                == proyecto.id_proyecto
+            )
+            .order_by(PalabraClave.nombre)
+        ).all()
+    )
+
+    # AUTORES
+
+    filas_autores = db.execute(
+        select(
+            Usuario,
+            ProyectoAutor.tipo_participacion,
+            ProyectoAutor.orden_autoria,
+        )
+        .join(
+            ProyectoAutor,
+            ProyectoAutor.id_usuario == Usuario.id_usuario,
+        )
+        .where(
+            ProyectoAutor.id_proyecto == proyecto.id_proyecto
+        )
+        .order_by(
+            ProyectoAutor.orden_autoria.asc().nulls_last()
+        )
+    ).all()
+
+    autores = [
+        AutorProyectoResponse(
+            id_usuario=autor.id_usuario,
+            nombre=autor.nombre,
+            apellido_paterno=autor.apellido_paterno,
+            apellido_materno=autor.apellido_materno,
+            tipo_participacion=tipo_participacion.value,
+            orden_autoria=orden_autoria,
+        )
+        for autor, tipo_participacion, orden_autoria
+        in filas_autores
+    ]
+
+    # RESPUESTA
+
+    return ProyectoDetalleResponse(
+        id_proyecto=proyecto.id_proyecto,
+        titulo=proyecto.titulo,
+        resumen=proyecto.resumen,
+        fecha_creacion=proyecto.fecha_creacion,
+        fecha_publicacion=proyecto.fecha_publicacion,
+        estado=proyecto.estado,
+        id_departamento=proyecto.id_departamento,
+        creado_por=proyecto.creado_por,
+        areas_tematicas=areas,
+        palabras_clave=palabras,
+        autores=autores,
+    )
+
+def obtener_detalle_publico(
+    db: Session,
+    id_proyecto: int,
+) -> ProyectoDetalleResponse:
+
+    proyecto = obtener_proyecto_publico(
+        db=db,
+        id_proyecto=id_proyecto,
+    )
+
+    return construir_detalle_proyecto(
+        db=db,
+        proyecto=proyecto,
+    )
+
+
+def obtener_mi_proyecto_detalle(
+    db: Session,
+    id_proyecto: int,
+    usuario: Usuario,
+) -> ProyectoDetalleResponse:
+
+    proyecto = obtener_proyecto(
+        db=db,
+        id_proyecto=id_proyecto,
+    )
+
+    participacion = db.scalar(
+        select(ProyectoAutor).where(
+            ProyectoAutor.id_proyecto == id_proyecto,
+            ProyectoAutor.id_usuario == usuario.id_usuario,
+        )
+    )
+
+    if participacion is None:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="No tienes acceso a este proyecto",
+        )
+
+    return construir_detalle_proyecto(
+        db=db,
+        proyecto=proyecto,
     )

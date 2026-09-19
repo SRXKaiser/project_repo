@@ -4,6 +4,9 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from app.models.enums import EstadoProyecto
 
+from app.schemas.area_tematica import AreaTematicaResponse
+from app.schemas.palabra_clave import PalabraClaveResponse
+
 
 class ProyectoCreate(BaseModel):
     titulo: str = Field(
@@ -47,3 +50,17 @@ class ProyectoResponse(BaseModel):
     model_config = ConfigDict(
         from_attributes=True
     )
+
+class AutorProyectoResponse(BaseModel):
+    id_usuario: int
+    nombre: str
+    apellido_paterno: str
+    apellido_materno: str | None
+    tipo_participacion: str
+    orden_autoria: int | None
+
+
+class ProyectoDetalleResponse(ProyectoResponse):
+    areas_tematicas: list[AreaTematicaResponse]
+    palabras_clave: list[PalabraClaveResponse]
+    autores: list[AutorProyectoResponse]
