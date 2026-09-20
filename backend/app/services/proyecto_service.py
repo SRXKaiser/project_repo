@@ -19,6 +19,10 @@ from app.schemas.proyecto import (
     ProyectoDetalleResponse,
     ProyectoUpdate,
 )
+
+from app.api.dependencies import (
+    puede_consultar_proyecto_privado,
+)
 def crear_proyecto(
     db: Session,
     datos: ProyectoCreate,
@@ -386,14 +390,11 @@ def obtener_mi_proyecto_detalle(
         id_proyecto=id_proyecto,
     )
 
-    participacion = db.scalar(
-        select(ProyectoAutor).where(
-            ProyectoAutor.id_proyecto == id_proyecto,
-            ProyectoAutor.id_usuario == usuario.id_usuario,
-        )
-    )
-
-    if participacion is None:
+    if not puede_consultar_proyecto_privado(
+        db=db,
+        usuario=usuario,
+        id_proyecto=id_proyecto,
+    ):
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="No tienes acceso a este proyecto",

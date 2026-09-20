@@ -9,12 +9,23 @@ from app.schemas.proyecto_autor import ProyectoAutorCreate
 from app.services.proyecto_service import (
     verificar_proyecto_editable,
 )
-
+from app.api.dependencies import puede_consultar_proyecto_privado
 
 def listar_participantes(
     db: Session,
     id_proyecto: int,
+    usuario: Usuario,
 ) -> list[ProyectoAutor]:
+
+    if not puede_consultar_proyecto_privado(
+        db=db,
+        usuario=usuario,
+        id_proyecto=id_proyecto,
+    ):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="No tienes acceso a los participantes de este proyecto",
+        )
 
     consulta = (
         select(ProyectoAutor)

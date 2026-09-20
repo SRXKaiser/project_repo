@@ -13,6 +13,7 @@ from app.models.usuario import Usuario
 from app.api.dependencies import (
     es_administrador,
     es_jefe_departamento,
+    puede_consultar_proyecto_privado,
 )
 from app.models.responsable_departamento import (
     ResponsableDepartamento,
@@ -187,31 +188,20 @@ def listar_historial(
     usuario: Usuario,
 ) -> list[HistorialEstado]:
 
-    proyecto = obtener_proyecto_workflow(
+    obtener_proyecto_workflow(
         db=db,
         id_proyecto=id_proyecto,
     )
 
-    # Por ahora:
-    # - el creador puede consultar el historial
-    # - cualquier participante también puede consultarlo
-    #
-    # En la siguiente parte agregaremos jefe/admin.
-
-    if proyecto.creado_por != usuario.id_usuario:
-
-        participacion = db.scalar(
-            select(ProyectoAutor).where(
-                ProyectoAutor.id_proyecto == id_proyecto,
-                ProyectoAutor.id_usuario == usuario.id_usuario,
-            )
+    if not puede_consultar_proyecto_privado(
+        db=db,
+        usuario=usuario,
+        id_proyecto=id_proyecto,
+    ):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="No tienes acceso al historial de este proyecto",
         )
-
-        if participacion is None:
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail="No tienes acceso al historial de este proyecto",
-            )
 
     consulta = (
         select(HistorialEstado)

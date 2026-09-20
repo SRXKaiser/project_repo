@@ -149,3 +149,48 @@ def es_jefe_departamento(
     )
 
     return responsable is not None
+
+def puede_consultar_proyecto_privado(
+    db: Session,
+    usuario: Usuario,
+    id_proyecto: int,
+) -> bool:
+
+    from app.models.proyecto import Proyecto
+    from app.models.proyecto_autor import ProyectoAutor
+
+    proyecto = db.get(
+        Proyecto,
+        id_proyecto,
+    )
+
+    if proyecto is None:
+        return False
+
+    # Participante del proyecto.
+    participacion = db.scalar(
+        select(ProyectoAutor).where(
+            ProyectoAutor.id_proyecto == id_proyecto,
+            ProyectoAutor.id_usuario == usuario.id_usuario,
+        )
+    )
+
+    if participacion is not None:
+        return True
+
+    # Administrador.
+    if es_administrador(
+        db=db,
+        usuario=usuario,
+    ):
+        return True
+
+    # Responsable del departamento.
+    if es_jefe_departamento(
+        db=db,
+        usuario=usuario,
+        id_departamento=proyecto.id_departamento,
+    ):
+        return True
+
+    return False

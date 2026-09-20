@@ -9,8 +9,8 @@ from app.models.enums import EstadoProyecto
 from app.models.proyecto import Proyecto
 
 from app.models.archivo import Archivo
-from app.models.proyecto_autor import ProyectoAutor
 from app.models.usuario import Usuario
+from app.api.dependencies import puede_consultar_proyecto_privado
 from app.services.proyecto_service import (
     obtener_proyecto,
     verificar_proyecto_editable,
@@ -37,14 +37,11 @@ def listar_archivos_proyecto(
         id_proyecto=id_proyecto,
     )
 
-    participacion = db.scalar(
-        select(ProyectoAutor).where(
-            ProyectoAutor.id_proyecto == id_proyecto,
-            ProyectoAutor.id_usuario == usuario.id_usuario,
-        )
-    )
-
-    if participacion is None:
+    if not puede_consultar_proyecto_privado(
+        db=db,
+        usuario=usuario,
+        id_proyecto=id_proyecto,
+    ):
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="No tienes acceso a los archivos de este proyecto",
@@ -169,17 +166,11 @@ def obtener_archivo(
             detail="Archivo no encontrado",
         )
 
-    participacion = db.scalar(
-        select(ProyectoAutor).where(
-            ProyectoAutor.id_proyecto
-            == registro.id_proyecto,
-
-            ProyectoAutor.id_usuario
-            == usuario.id_usuario,
-        )
-    )
-
-    if participacion is None:
+    if not puede_consultar_proyecto_privado(
+        db=db,
+        usuario=usuario,
+        id_proyecto=registro.id_proyecto,
+    ):
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="No tienes acceso a este archivo",

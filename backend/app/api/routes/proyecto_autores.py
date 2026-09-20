@@ -28,10 +28,12 @@ router = APIRouter(
 def listar(
     id_proyecto: int,
     db: Session = Depends(get_db),
+    usuario: Usuario = Depends(get_current_user),
 ):
     return listar_participantes(
         db=db,
         id_proyecto=id_proyecto,
+        usuario=usuario,
     )
 
 
