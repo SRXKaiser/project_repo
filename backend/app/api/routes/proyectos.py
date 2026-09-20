@@ -20,6 +20,12 @@ from app.services.proyecto_service import (
     obtener_mi_proyecto_detalle,
     obtener_proyecto_publico,
 )
+from app.schemas.busqueda import (
+    BusquedaProyectosResponse,
+)
+from app.services.busqueda_service import (
+    buscar_proyectos_publicos,
+)
 
 
 
@@ -91,6 +97,53 @@ def mis_proyectos(
         usuario=usuario,
         skip=skip,
         limit=limit,
+    )
+
+@router.get(
+    "/buscar",
+    response_model=BusquedaProyectosResponse,
+)
+def buscar(
+    q: str | None = Query(
+        default=None,
+        max_length=200,
+    ),
+    autor: str | None = Query(
+        default=None,
+        max_length=150,
+    ),
+    palabra_clave: str | None = Query(
+        default=None,
+        max_length=100,
+    ),
+    id_area: int | None = Query(
+        default=None,
+        ge=1,
+    ),
+    id_departamento: int | None = Query(
+        default=None,
+        ge=1,
+    ),
+    pagina: int = Query(
+        default=1,
+        ge=1,
+    ),
+    por_pagina: int = Query(
+        default=20,
+        ge=1,
+        le=100,
+    ),
+    db: Session = Depends(get_db),
+):
+    return buscar_proyectos_publicos(
+        db=db,
+        q=q,
+        autor=autor,
+        palabra_clave=palabra_clave,
+        id_area=id_area,
+        id_departamento=id_departamento,
+        pagina=pagina,
+        por_pagina=por_pagina,
     )
 
 @router.get(

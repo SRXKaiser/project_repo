@@ -24,6 +24,9 @@ app = FastAPI(
     description="API para el repositorio de proyectos de investigación del ITCJ",
     version="0.1.0",
 )
+from app.api.routes.admin_catalogos import (
+    router as admin_catalogos_router,
+)
 
 app.include_router(auth_router)
 app.include_router(usuarios_router)
@@ -35,6 +38,7 @@ app.include_router(archivos_router)
 app.include_router(workflow_router)
 app.include_router(admin_usuarios_router)
 app.include_router(admin_responsables_router)
+app.include_router(admin_catalogos_router)
 
 @app.get("/")
 def root():
