@@ -5,12 +5,11 @@ from fastapi import HTTPException, UploadFile, status
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from app.api.dependencies import puede_consultar_proyecto_privado
+from app.models.archivo import Archivo
 from app.models.enums import EstadoProyecto
 from app.models.proyecto import Proyecto
-
-from app.models.archivo import Archivo
 from app.models.usuario import Usuario
-from app.api.dependencies import puede_consultar_proyecto_privado
 from app.services.proyecto_service import (
     obtener_proyecto,
     verificar_proyecto_editable,
@@ -24,6 +23,31 @@ TIPOS_PERMITIDOS = {
 }
 
 TAMANIO_MAXIMO = 10 * 1024 * 1024  # 10 MB
+
+
+def obtener_ruta_segura(
+    ruta_archivo: str,
+) -> Path:
+    """
+    Resuelve una ruta almacenada en la base de datos y comprueba
+    que permanezca dentro del directorio permitido de proyectos.
+    """
+
+    storage_root = STORAGE_ROOT.resolve()
+    ruta = Path(ruta_archivo).resolve()
+
+    try:
+        ruta.relative_to(storage_root)
+    except ValueError:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=(
+                "La ruta del archivo almacenado "
+                "no es válida"
+            ),
+        )
+
+    return ruta
 
 
 def listar_archivos_proyecto(
@@ -44,7 +68,10 @@ def listar_archivos_proyecto(
     ):
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="No tienes acceso a los archivos de este proyecto",
+            detail=(
+                "No tienes acceso a los archivos "
+                "de este proyecto"
+            ),
         )
 
     consulta = (
@@ -102,7 +129,9 @@ def subir_archivo(
             detail="El archivo no contiene un PDF válido",
         )
 
-    extension = TIPOS_PERMITIDOS[archivo.content_type]
+    extension = TIPOS_PERMITIDOS[
+        archivo.content_type
+    ]
 
     nombre_almacenado = (
         f"{uuid4().hex}{extension}"
@@ -117,7 +146,10 @@ def subir_archivo(
         exist_ok=True,
     )
 
-    ruta = directorio_proyecto / nombre_almacenado
+    ruta = (
+        directorio_proyecto
+        / nombre_almacenado
+    )
 
     try:
         ruta.write_bytes(contenido)
@@ -125,7 +157,8 @@ def subir_archivo(
         registro = Archivo(
             id_proyecto=proyecto.id_proyecto,
             nombre_original=(
-                archivo.filename or "documento.pdf"
+                archivo.filename
+                or "documento.pdf"
             )[:255],
             nombre_almacenado=nombre_almacenado,
             tipo_mime=archivo.content_type,
@@ -206,7 +239,9 @@ def eliminar_archivo(
             detail="Archivo no encontrado",
         )
 
-    ruta = Path(registro.ruta_archivo)
+    ruta = obtener_ruta_segura(
+        registro.ruta_archivo
+    )
 
     try:
         db.delete(registro)
@@ -218,6 +253,7 @@ def eliminar_archivo(
     except Exception:
         db.rollback()
         raise
+
 
 def obtener_archivo_publico(
     db: Session,
@@ -232,7 +268,8 @@ def obtener_archivo_publico(
 
     if (
         proyecto is None
-        or proyecto.estado != EstadoProyecto.PUBLICADO
+        or proyecto.estado
+        != EstadoProyecto.PUBLICADO
     ):
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

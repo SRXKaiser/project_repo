@@ -38,3 +38,6 @@ frontend/dist/
 
 # Alembic / Python cache
 **/__pycache__/
+
+# Local file storage
+storage/

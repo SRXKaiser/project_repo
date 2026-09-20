@@ -1,23 +1,24 @@
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 
 from fastapi import HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.orm import Session
-
-from app.models.enums import EstadoProyecto
-from app.models.historial_estado import HistorialEstado
-from app.models.proyecto import Proyecto
-from app.models.proyecto_autor import ProyectoAutor
-from app.models.usuario import Usuario
 
 from app.api.dependencies import (
     es_administrador,
     es_jefe_departamento,
     puede_consultar_proyecto_privado,
 )
-from app.models.responsable_departamento import (
-    ResponsableDepartamento,
-)
+from app.models.archivo import Archivo
+from app.models.enums import EstadoProyecto, TipoParticipacion
+from app.models.historial_estado import HistorialEstado
+from app.models.proyecto import Proyecto
+from app.models.proyecto_area import ProyectoArea
+from app.models.proyecto_autor import ProyectoAutor
+from app.models.proyecto_palabra_clave import ProyectoPalabraClave
+from app.models.responsable_departamento import ResponsableDepartamento
+from app.models.usuario import Usuario
+
 
 def obtener_proyecto_workflow(
     db: Session,
@@ -75,7 +76,84 @@ def verificar_creador(
     if proyecto.creado_por != usuario.id_usuario:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="Solo el creador del proyecto puede realizar esta acción",
+            detail=(
+                "Solo el creador del proyecto "
+                "puede realizar esta acción"
+            ),
+        )
+
+
+def verificar_requisitos_revision(
+    db: Session,
+    id_proyecto: int,
+) -> None:
+    """
+    Verifica que un proyecto tenga la información mínima
+    necesaria antes de enviarse a revisión.
+    """
+
+    # Debe existir al menos un AUTOR.
+    autor = db.scalar(
+        select(ProyectoAutor).where(
+            ProyectoAutor.id_proyecto == id_proyecto,
+            ProyectoAutor.tipo_participacion
+            == TipoParticipacion.AUTOR,
+        )
+    )
+
+    if autor is None:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="El proyecto debe tener al menos un autor",
+        )
+
+    # Debe tener al menos un área temática.
+    area = db.scalar(
+        select(ProyectoArea).where(
+            ProyectoArea.id_proyecto == id_proyecto,
+        )
+    )
+
+    if area is None:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=(
+                "El proyecto debe tener al menos "
+                "un área temática"
+            ),
+        )
+
+    # Debe tener al menos una palabra clave.
+    palabra_clave = db.scalar(
+        select(ProyectoPalabraClave).where(
+            ProyectoPalabraClave.id_proyecto == id_proyecto,
+        )
+    )
+
+    if palabra_clave is None:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=(
+                "El proyecto debe tener al menos "
+                "una palabra clave"
+            ),
+        )
+
+    # Debe tener al menos un archivo PDF.
+    archivo = db.scalar(
+        select(Archivo).where(
+            Archivo.id_proyecto == id_proyecto,
+            Archivo.tipo_mime == "application/pdf",
+        )
+    )
+
+    if archivo is None:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=(
+                "El proyecto debe tener al menos "
+                "un archivo PDF"
+            ),
         )
 
 
@@ -105,18 +183,10 @@ def enviar_a_revision(
             ),
         )
 
-    # Debe existir al menos un autor.
-    autor = db.scalar(
-        select(ProyectoAutor).where(
-            ProyectoAutor.id_proyecto == id_proyecto,
-        )
+    verificar_requisitos_revision(
+        db=db,
+        id_proyecto=id_proyecto,
     )
-
-    if autor is None:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail="El proyecto debe tener al menos un participante",
-        )
 
     try:
         registrar_cambio_estado(
@@ -200,7 +270,10 @@ def listar_historial(
     ):
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="No tienes acceso al historial de este proyecto",
+            detail=(
+                "No tienes acceso al historial "
+                "de este proyecto"
+            ),
         )
 
     consulta = (
@@ -217,6 +290,7 @@ def listar_historial(
     return list(
         db.scalars(consulta).all()
     )
+
 
 def verificar_permiso_revision(
     db: Session,
@@ -244,6 +318,7 @@ def verificar_permiso_revision(
             "este proyecto"
         ),
     )
+
 
 def aprobar_proyecto(
     db: Session,
@@ -289,6 +364,7 @@ def aprobar_proyecto(
     except Exception:
         db.rollback()
         raise
+
 
 def solicitar_cambios(
     db: Session,
@@ -344,6 +420,7 @@ def solicitar_cambios(
         db.rollback()
         raise
 
+
 def rechazar_proyecto(
     db: Session,
     id_proyecto: int,
@@ -398,6 +475,7 @@ def rechazar_proyecto(
         db.rollback()
         raise
 
+
 def listar_pendientes_revision(
     db: Session,
     usuario: Usuario,
@@ -427,6 +505,7 @@ def listar_pendientes_revision(
     # Responsable de departamento:
     # obtenemos los departamentos activos
     # de los que es responsable.
+    hoy = date.today()
     departamentos = list(
         db.scalars(
             select(
@@ -437,9 +516,16 @@ def listar_pendientes_revision(
                 == usuario.id_usuario,
 
                 ResponsableDepartamento.activo.is_(True),
+
+                ResponsableDepartamento.fecha_inicio <= hoy,
+
+                (
+                    ResponsableDepartamento.fecha_fin.is_(None)
+                    | (ResponsableDepartamento.fecha_fin >= hoy)
+                ),
             )
         ).all()
-    )
+    )   
 
     if not departamentos:
         raise HTTPException(
@@ -467,6 +553,7 @@ def listar_pendientes_revision(
     return list(
         db.scalars(consulta).all()
     )
+
 
 def publicar_proyecto(
     db: Session,
@@ -516,4 +603,3 @@ def publicar_proyecto(
     except Exception:
         db.rollback()
         raise
-

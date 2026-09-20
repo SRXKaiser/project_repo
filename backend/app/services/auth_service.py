@@ -54,6 +54,11 @@ def registrar_usuario(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="La carrera especificada no existe",
             )
+        if not carrera.activa:
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="La carrera especificada no está activa",
+            )
 
         num_control_existente = db.scalar(
             select(Estudiante).where(
@@ -119,6 +124,11 @@ def registrar_usuario(
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="La carrera especificada no existe",
+            )
+        if not carrera.activa:
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="La carrera especificada no está activa",
             )
 
         egresado_existente = db.scalar(

@@ -7,7 +7,7 @@ from app.core.security import decode_access_token
 from app.db.database import get_db
 from app.models.enums import EstadoCuenta
 from app.models.usuario import Usuario
-
+from datetime import date
 bearer_scheme = HTTPBearer()
 from collections.abc import Callable
 from app.models.enums import TipoUsuario
@@ -136,6 +136,8 @@ def es_jefe_departamento(
     if docente is None:
         return False
 
+    hoy = date.today()
+
     responsable = db.scalar(
         select(ResponsableDepartamento).where(
             ResponsableDepartamento.id_usuario_docente
@@ -145,6 +147,13 @@ def es_jefe_departamento(
             == id_departamento,
 
             ResponsableDepartamento.activo.is_(True),
+
+            ResponsableDepartamento.fecha_inicio <= hoy,
+
+            (
+                ResponsableDepartamento.fecha_fin.is_(None)
+                | (ResponsableDepartamento.fecha_fin >= hoy)
+            ),
         )
     )
 

@@ -10,6 +10,13 @@ from app.api.routes.areas_tematicas import router as areas_tematicas_router
 from app.api.routes.palabras_clave import router as palabras_clave_router
 from app.api.routes.archivos import router as archivos_router
 from app.api.routes.workflow import router as workflow_router
+from app.api.routes.admin_catalogos import (
+    router as admin_catalogos_router,
+)
+
+from fastapi.middleware.cors import CORSMiddleware
+
+from app.core.config import settings
 from app.api.routes.admin_usuarios import (
     router as admin_usuarios_router,
 )
@@ -24,8 +31,19 @@ app = FastAPI(
     description="API para el repositorio de proyectos de investigación del ITCJ",
     version="0.1.0",
 )
-from app.api.routes.admin_catalogos import (
-    router as admin_catalogos_router,
+
+origins = [
+    origin.strip()
+    for origin in settings.cors_origins.split(",")
+    if origin.strip()
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 app.include_router(auth_router)

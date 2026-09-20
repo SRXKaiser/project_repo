@@ -20,6 +20,7 @@ from app.services.archivo_service import (
     listar_archivos_proyecto,
     obtener_archivo,
     obtener_archivo_publico,
+    obtener_ruta_segura,
     subir_archivo,
 )
 
