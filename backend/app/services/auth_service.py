@@ -2,6 +2,7 @@ from datetime import datetime, timezone
 
 from fastapi import HTTPException, status
 from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from app.core.security import (
@@ -54,6 +55,7 @@ def registrar_usuario(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="La carrera especificada no existe",
             )
+
         if not carrera.activa:
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
@@ -125,6 +127,7 @@ def registrar_usuario(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="La carrera especificada no existe",
             )
+
         if not carrera.activa:
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
@@ -196,6 +199,17 @@ def registrar_usuario(
         db.refresh(usuario)
 
         return usuario
+
+    except IntegrityError:
+        db.rollback()
+
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=(
+                "No se pudo registrar el usuario porque "
+                "alguno de sus datos únicos ya está registrado"
+            ),
+        )
 
     except Exception:
         db.rollback()

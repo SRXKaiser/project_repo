@@ -1,4 +1,4 @@
-from sqlalchemy import Enum, ForeignKey
+from sqlalchemy import Enum, ForeignKey, Index
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.db.base import Base
@@ -9,7 +9,10 @@ class ProyectoAutor(Base):
     __tablename__ = "proyectos_autores"
 
     id_proyecto: Mapped[int] = mapped_column(
-        ForeignKey("proyectos.id_proyecto", ondelete="CASCADE"),
+        ForeignKey(
+            "proyectos.id_proyecto",
+            ondelete="CASCADE",
+        ),
         primary_key=True
     )
 
@@ -18,12 +21,30 @@ class ProyectoAutor(Base):
         primary_key=True
     )
 
-    tipo_participacion: Mapped[TipoParticipacion] = mapped_column(
-        Enum(TipoParticipacion, name="tipo_participacion_enum"),
+    tipo_participacion: Mapped[
+        TipoParticipacion
+    ] = mapped_column(
+        Enum(
+            TipoParticipacion,
+            name="tipo_participacion_enum",
+        ),
         nullable=False,
         default=TipoParticipacion.AUTOR
     )
 
     orden_autoria: Mapped[int | None] = mapped_column(
         nullable=True
+    )
+
+    __table_args__ = (
+        Index(
+            "uq_orden_autor_por_proyecto",
+            "id_proyecto",
+            "orden_autoria",
+            unique=True,
+            postgresql_where=(
+                tipo_participacion
+                == TipoParticipacion.AUTOR
+            ),
+        ),
     )

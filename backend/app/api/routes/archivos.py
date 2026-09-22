@@ -1,5 +1,3 @@
-from pathlib import Path
-
 from fastapi import (
     APIRouter,
     Depends,
@@ -87,7 +85,9 @@ def descargar(
             detail="Archivo no encontrado",
         )
 
-    ruta = Path(registro.ruta_archivo)
+    ruta = obtener_ruta_segura(
+        registro.ruta_archivo
+    )
 
     if not ruta.is_file():
         raise HTTPException(
@@ -119,6 +119,7 @@ def eliminar(
         usuario=usuario,
     )
 
+
 @router.get(
     "/{id_proyecto}/archivos/{id_archivo}/publico",
 )
@@ -133,7 +134,9 @@ def descargar_publico(
         id_archivo=id_archivo,
     )
 
-    ruta = Path(registro.ruta_archivo)
+    ruta = obtener_ruta_segura(
+        registro.ruta_archivo
+    )
 
     if not ruta.is_file():
         raise HTTPException(
@@ -146,4 +149,3 @@ def descargar_publico(
         media_type=registro.tipo_mime,
         filename=registro.nombre_original,
     )
-

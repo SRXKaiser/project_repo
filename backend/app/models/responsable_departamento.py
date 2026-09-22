@@ -1,6 +1,12 @@
 from datetime import date
 
-from sqlalchemy import Boolean, Date, ForeignKey
+from sqlalchemy import (
+    Boolean,
+    Date,
+    ForeignKey,
+    Index,
+    text,
+)
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.db.base import Base
@@ -37,4 +43,13 @@ class ResponsableDepartamento(Base):
         Boolean,
         nullable=False,
         default=True
+    )
+
+    __table_args__ = (
+        Index(
+            "uq_responsable_activo_departamento",
+            "id_departamento",
+            unique=True,
+            postgresql_where=text("activo IS true"),
+        ),
     )

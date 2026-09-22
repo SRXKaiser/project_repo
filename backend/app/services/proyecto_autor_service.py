@@ -1,15 +1,15 @@
 from fastapi import HTTPException, status
 from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
+from app.api.dependencies import puede_consultar_proyecto_privado
 from app.models.enums import TipoParticipacion
 from app.models.proyecto_autor import ProyectoAutor
 from app.models.usuario import Usuario
 from app.schemas.proyecto_autor import ProyectoAutorCreate
-from app.services.proyecto_service import (
-    verificar_proyecto_editable,
-)
-from app.api.dependencies import puede_consultar_proyecto_privado
+from app.services.proyecto_service import verificar_proyecto_editable
+
 
 def listar_participantes(
     db: Session,
@@ -133,6 +133,17 @@ def agregar_participante(
         db.refresh(participante)
 
         return participante
+
+    except IntegrityError:
+        db.rollback()
+
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=(
+                "No se pudo agregar el participante porque "
+                "existe un conflicto con los datos del proyecto"
+            ),
+        )
 
     except Exception:
         db.rollback()

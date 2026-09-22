@@ -2,6 +2,7 @@ from datetime import date
 
 from fastapi import HTTPException, status
 from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from app.models.departamento import Departamento
@@ -103,7 +104,6 @@ def obtener_responsable_activo(
         select(ResponsableDepartamento).where(
             ResponsableDepartamento.id_departamento
             == id_departamento,
-
             ResponsableDepartamento.activo.is_(True),
         )
     )
@@ -167,6 +167,17 @@ def asignar_responsable(
         db.refresh(nuevo_responsable)
 
         return nuevo_responsable
+
+    except IntegrityError:
+        db.rollback()
+
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=(
+                "No se pudo asignar el responsable porque "
+                "el departamento ya tiene un responsable activo"
+            ),
+        )
 
     except Exception:
         db.rollback()
