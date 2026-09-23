@@ -27,7 +27,7 @@ Thumbs.db
 # Logs
 *.log
 
-# Frontend)
+# Frontend
 node_modules/
 frontend/node_modules/
 frontend/dist/
@@ -35,9 +35,8 @@ frontend/dist/
 # Testing
 .pytest_cache/
 .coverage
-
-# Alembic / Python cache
-**/__pycache__/
+htmlcov/
 
 # Local file storage
 storage/
+backend/storage/
