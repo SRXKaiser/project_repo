@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Catálogos | InvestigaTec
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="../assets/css/styles.css"
+    >
+
+</head>
+
+<body class="app-body">
+
+
+<header class="app-header">
+
+    <div class="app-header-inner">
+
+        <div style="display:flex;align-items:center;gap:14px;">
+
+            <button
+                class="app-mobile-menu"
+                type="button"
+                data-app-menu
+            >
+                ☰
+            </button>
+
+            <a
+                class="app-brand"
+                href="./dashboard.html"
+            >
+
+                <div class="app-brand-mark">
+                    IT
+                </div>
+
+                <div class="app-brand-text">
+
+                    <strong>
+                        InvestigaTec
+                    </strong>
+
+                    <span>
+                        Repositorio de Investigación
+                    </span>
+
+                </div>
+
+            </a>
+
+        </div>
+
+
+        <div class="app-user">
+
+            <div class="user-avatar">
+                AD
+            </div>
+
+            <div class="user-info">
+                <strong>Administrador</strong>
+                <span>Administrador</span>
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<aside
+    class="app-sidebar"
+    data-app-sidebar
+>
+
+    <div class="sidebar-section">
+
+        <span class="sidebar-label">
+            Mi espacio
+        </span>
+
+        <nav class="sidebar-nav">
+
+            <a
+                class="sidebar-link"
+                href="../user/dashboard.html"
+            >
+                <span class="sidebar-icon">IN</span>
+                Mi panel
+            </a>
+
+            <a
+                class="sidebar-link"
+                href="../public/explorar.html"
+            >
+                <span class="sidebar-icon">EX</span>
+                Explorar
+            </a>
+
+        </nav>
+
+    </div>
+
+
+    <div class="sidebar-section">
+
+        <span class="sidebar-label">
+            Administración
+        </span>
+
+        <nav class="sidebar-nav">
+
+            <a
+                class="sidebar-link"
+                href="./dashboard.html"
+            >
+                <span class="sidebar-icon">AD</span>
+                Panel administrativo
+            </a>
+
+            <a
+                class="sidebar-link"
+                href="./usuarios.html"
+            >
+                <span class="sidebar-icon">US</span>
+                Usuarios
+            </a>
+
+            <a
+                class="sidebar-link active"
+                href="./catalogos.html"
+            >
+                <span class="sidebar-icon">CA</span>
+                Catálogos
+            </a>
+
+            <a
+                class="sidebar-link"
+                href="./responsables.html"
+            >
+                <span class="sidebar-icon">RD</span>
+                Responsables
+            </a>
+
+        </nav>
+
+    </div>
+
+</aside>
+
+
+<main class="app-main">
+
+    <div class="app-container">
+
+
+        <div class="page-heading">
+
+            <div>
+
+                <span class="admin-heading-badge">
+                    Administración
+                </span>
+
+                <h1>
+                    Catálogos
+                </h1>
+
+                <p>
+                    Administra la información base
+                    utilizada por InvestigaTec.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- PESTAÑAS -->
+
+        <div class="catalog-tabs">
+
+            <button
+                class="catalog-tab active"
+                type="button"
+            >
+                Departamentos
+            </button>
+
+            <button
+                class="catalog-tab"
+                type="button"
+            >
+                Carreras
+            </button>
+
+            <button
+                class="catalog-tab"
+                type="button"
+            >
+                Áreas temáticas
+            </button>
+
+        </div>
+
+
+        <div class="catalog-layout">
+
+
+            <!-- TABLA -->
+
+            <section class="admin-table-card">
+
+                <table class="admin-table">
+
+                    <thead>
+
+                        <tr>
+                            <th>Departamento</th>
+                            <th>Estado</th>
+                            <th>Acción</th>
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+
+                        <tr>
+
+                            <td>
+                                <strong>
+                                    Sistemas y Computación
+                                </strong>
+                            </td>
+
+                            <td>
+                                <span
+                                    class="
+                                        status
+                                        account-active
+                                    "
+                                >
+                                    Activo
+                                </span>
+                            </td>
+
+                            <td>
+
+                                <button
+                                    class="
+                                        btn
+                                        btn-outline
+                                        btn-small
+                                    "
+                                    type="button"
+                                >
+                                    Editar
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                Ciencias Básicas
+                            </td>
+
+                            <td>
+                                <span
+                                    class="
+                                        status
+                                        account-active
+                                    "
+                                >
+                                    Activo
+                                </span>
+                            </td>
+
+                            <td>
+
+                                <button
+                                    class="
+                                        btn
+                                        btn-outline
+                                        btn-small
+                                    "
+                                    type="button"
+                                >
+                                    Editar
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                Ingeniería Industrial
+                            </td>
+
+                            <td>
+                                <span
+                                    class="
+                                        status
+                                        account-inactive
+                                    "
+                                >
+                                    Inactivo
+                                </span>
+                            </td>
+
+                            <td>
+
+                                <button
+                                    class="
+                                        btn
+                                        btn-outline
+                                        btn-small
+                                    "
+                                    type="button"
+                                >
+                                    Editar
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+
+                    </tbody>
+
+                </table>
+
+            </section>
+
+
+
+            <!-- CREAR -->
+
+            <aside class="catalog-form">
+
+                <h2>
+                    Nuevo departamento
+                </h2>
+
+                <p>
+                    Agrega un departamento al catálogo
+                    de InvestigaTec.
+                </p>
+
+
+                <div class="form-stack">
+
+                    <div>
+
+                        <label
+                            class="form-label"
+                            for="catalog-name"
+                        >
+                            Nombre
+                        </label>
+
+                        <input
+                            class="form-control"
+                            id="catalog-name"
+                            type="text"
+                            placeholder="Nombre del departamento"
+                        >
+
+                    </div>
+
+
+                    <button
+                        class="
+                            btn
+                            btn-primary
+                            btn-block
+                        "
+                        type="button"
+                    >
+                        Guardar
+                    </button>
+
+                </div>
+
+            </aside>
+
+
+        </div>
+
+
+        <div
+            class="form-notice"
+            style="margin-top:20px;"
+        >
+
+            En esta maqueta se muestra el catálogo de
+            departamentos. En React, las pestañas permitirán
+            administrar también Carreras y Áreas temáticas
+            desde la misma interfaz.
+
+        </div>
+
+
+    </div>
+
+</main>
+
+
+<script src="../assets/js/main.js"></script>
+
+</body>
+</html>

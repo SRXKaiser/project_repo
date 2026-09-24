@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Usuarios | InvestigaTec
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="../assets/css/styles.css"
+    >
+
+</head>
+
+<body class="app-body">
+
+
+<header class="app-header">
+
+    <div class="app-header-inner">
+
+        <div style="display:flex;align-items:center;gap:14px;">
+
+            <button
+                class="app-mobile-menu"
+                type="button"
+                data-app-menu
+            >
+                ☰
+            </button>
+
+            <a
+                class="app-brand"
+                href="./dashboard.html"
+            >
+                <div class="app-brand-mark">IT</div>
+
+                <div class="app-brand-text">
+                    <strong>InvestigaTec</strong>
+                    <span>
+                        Repositorio de Investigación
+                    </span>
+                </div>
+            </a>
+
+        </div>
+
+
+        <div class="app-user">
+
+            <div class="user-avatar">
+                AD
+            </div>
+
+            <div class="user-info">
+                <strong>Administrador</strong>
+                <span>Administrador</span>
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<aside
+    class="app-sidebar"
+    data-app-sidebar
+>
+
+    <div class="sidebar-section">
+
+        <span class="sidebar-label">
+            Mi espacio
+        </span>
+
+        <nav class="sidebar-nav">
+
+            <a
+                class="sidebar-link"
+                href="../user/dashboard.html"
+            >
+                <span class="sidebar-icon">IN</span>
+                Mi panel
+            </a>
+
+            <a
+                class="sidebar-link"
+                href="../user/mis-proyectos.html"
+            >
+                <span class="sidebar-icon">MP</span>
+                Mis proyectos
+            </a>
+
+            <a
+                class="sidebar-link"
+                href="../public/explorar.html"
+            >
+                <span class="sidebar-icon">EX</span>
+                Explorar
+            </a>
+
+        </nav>
+
+    </div>
+
+
+    <div class="sidebar-section">
+
+        <span class="sidebar-label">
+            Administración
+        </span>
+
+        <nav class="sidebar-nav">
+
+            <a
+                class="sidebar-link"
+                href="./dashboard.html"
+            >
+                <span class="sidebar-icon">AD</span>
+                Panel administrativo
+            </a>
+
+            <a
+                class="sidebar-link active"
+                href="./usuarios.html"
+            >
+                <span class="sidebar-icon">US</span>
+                Usuarios
+            </a>
+
+            <a
+                class="sidebar-link"
+                href="./catalogos.html"
+            >
+                <span class="sidebar-icon">CA</span>
+                Catálogos
+            </a>
+
+            <a
+                class="sidebar-link"
+                href="./responsables.html"
+            >
+                <span class="sidebar-icon">RD</span>
+                Responsables
+            </a>
+
+        </nav>
+
+    </div>
+
+</aside>
+
+
+<main class="app-main">
+
+    <div class="app-container">
+
+
+        <div class="page-heading">
+
+            <div>
+
+                <span class="admin-heading-badge">
+                    Administración
+                </span>
+
+                <h1>
+                    Usuarios
+                </h1>
+
+                <p>
+                    Consulta usuarios registrados y
+                    administra el estado de sus cuentas.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- FILTROS -->
+
+        <div class="admin-filters">
+
+            <input
+                class="form-control"
+                type="search"
+                placeholder="Nombre o correo..."
+            >
+
+
+            <select class="form-control">
+
+                <option>
+                    Todos los tipos
+                </option>
+
+                <option>
+                    Estudiante
+                </option>
+
+                <option>
+                    Docente
+                </option>
+
+                <option>
+                    Egresado
+                </option>
+
+            </select>
+
+
+            <select class="form-control">
+
+                <option>
+                    Todos los estados
+                </option>
+
+                <option>
+                    Activa
+                </option>
+
+                <option>
+                    Inactiva
+                </option>
+
+                <option>
+                    Bloqueada
+                </option>
+
+            </select>
+
+
+            <button
+                class="btn btn-primary"
+                type="button"
+            >
+                Buscar
+            </button>
+
+        </div>
+
+
+        <!-- TABLA -->
+
+        <section class="admin-table-card">
+
+            <table class="admin-table">
+
+                <thead>
+
+                    <tr>
+                        <th>Usuario</th>
+                        <th>Tipo</th>
+                        <th>Estado</th>
+                        <th>Último acceso</th>
+                        <th>Acción</th>
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+
+                    <tr>
+
+                        <td>
+
+                            <div class="admin-user">
+
+                                <div class="admin-user-avatar">
+                                    AM
+                                </div>
+
+                                <div>
+                                    <strong>
+                                        Ana Martínez
+                                    </strong>
+
+                                    <span>
+                                        ana@example.com
+                                    </span>
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+                            Estudiante
+                        </td>
+
+                        <td>
+                            <span
+                                class="
+                                    status
+                                    account-active
+                                "
+                            >
+                                Activa
+                            </span>
+                        </td>
+
+                        <td>
+                            23 sep. 2026
+                        </td>
+
+                        <td>
+
+                            <button
+                                class="
+                                    btn
+                                    btn-outline
+                                    btn-small
+                                "
+                                type="button"
+                            >
+                                Cambiar estado
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+
+
+                    <tr>
+
+                        <td>
+
+                            <div class="admin-user">
+
+                                <div class="admin-user-avatar">
+                                    LR
+                                </div>
+
+                                <div>
+                                    <strong>
+                                        Laura Ramírez
+                                    </strong>
+
+                                    <span>
+                                        laura@example.com
+                                    </span>
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+                            Docente
+                        </td>
+
+                        <td>
+                            <span
+                                class="
+                                    status
+                                    account-active
+                                "
+                            >
+                                Activa
+                            </span>
+                        </td>
+
+                        <td>
+                            22 sep. 2026
+                        </td>
+
+                        <td>
+
+                            <button
+                                class="
+                                    btn
+                                    btn-outline
+                                    btn-small
+                                "
+                                type="button"
+                            >
+                                Cambiar estado
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+
+
+                    <tr>
+
+                        <td>
+
+                            <div class="admin-user">
+
+                                <div class="admin-user-avatar">
+                                    DT
+                                </div>
+
+                                <div>
+                                    <strong>
+                                        Daniel Torres
+                                    </strong>
+
+                                    <span>
+                                        daniel@example.com
+                                    </span>
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+                            Egresado
+                        </td>
+
+                        <td>
+                            <span
+                                class="
+                                    status
+                                    account-inactive
+                                "
+                            >
+                                Inactiva
+                            </span>
+                        </td>
+
+                        <td>
+                            10 sep. 2026
+                        </td>
+
+                        <td>
+
+                            <button
+                                class="
+                                    btn
+                                    btn-outline
+                                    btn-small
+                                "
+                                type="button"
+                            >
+                                Cambiar estado
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+
+
+                    <tr>
+
+                        <td>
+
+                            <div class="admin-user">
+
+                                <div class="admin-user-avatar">
+                                    ML
+                                </div>
+
+                                <div>
+                                    <strong>
+                                        Mariana López
+                                    </strong>
+
+                                    <span>
+                                        mariana@example.com
+                                    </span>
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+                            Estudiante
+                        </td>
+
+                        <td>
+                            <span
+                                class="
+                                    status
+                                    account-blocked
+                                "
+                            >
+                                Bloqueada
+                            </span>
+                        </td>
+
+                        <td>
+                            4 sep. 2026
+                        </td>
+
+                        <td>
+
+                            <button
+                                class="
+                                    btn
+                                    btn-outline
+                                    btn-small
+                                "
+                                type="button"
+                            >
+                                Cambiar estado
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+
+                </tbody>
+
+            </table>
+
+        </section>
+
+
+        <!-- PAGINACIÓN -->
+
+        <div class="admin-pagination">
+
+            <span>
+                Mostrando 1–4 de 148 usuarios
+            </span>
+
+
+            <div class="admin-pagination-actions">
+
+                <button
+                    class="btn btn-outline btn-small"
+                    type="button"
+                >
+                    Anterior
+                </button>
+
+                <button
+                    class="btn btn-outline btn-small"
+                    type="button"
+                >
+                    Siguiente
+                </button>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</main>
+
+
+<script src="../assets/js/main.js"></script>
+
+</body>
+</html>

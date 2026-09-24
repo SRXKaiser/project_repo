@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Crear cuenta | InvestigaTec
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="../assets/css/styles.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- ==========================================
+         HEADER
+         ========================================== -->
+
+    <header class="site-header">
+
+        <div class="container navbar">
+
+            <a
+                class="brand"
+                href="../public/index.html"
+            >
+
+                <div class="brand-mark">
+                    IT
+                </div>
+
+                <div class="brand-text">
+
+                    <span class="brand-title">
+                        InvestigaTec
+                    </span>
+
+                    <span class="brand-subtitle">
+                        Repositorio de Investigación
+                    </span>
+
+                </div>
+
+            </a>
+
+
+            <nav class="nav-links">
+
+                <a
+                    class="nav-link"
+                    href="../public/index.html"
+                >
+                    Inicio
+                </a>
+
+                <a
+                    class="nav-link"
+                    href="../public/explorar.html"
+                >
+                    Explorar proyectos
+                </a>
+
+                <a
+                    class="btn btn-outline"
+                    href="./login.html"
+                >
+                    Iniciar sesión
+                </a>
+
+            </nav>
+
+        </div>
+
+    </header>
+
+
+
+    <main class="auth-page">
+
+
+        <!-- ======================================
+             PANEL IZQUIERDO
+             ====================================== -->
+
+        <section class="auth-side">
+
+            <div class="auth-side-content">
+
+
+                <div class="auth-side-brand">
+
+                    <div class="auth-side-mark">
+                        IT
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            InvestigaTec
+                        </strong>
+
+                        <span>
+                            Comunidad de investigación
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <h1>
+                    Comparte tu investigación.
+                </h1>
+
+
+                <p class="auth-side-description">
+
+                    Crea tu cuenta para registrar
+                    proyectos, colaborar con otros
+                    participantes y compartir conocimiento
+                    con la comunidad del ITCJ.
+
+                </p>
+
+
+                <div class="auth-feature-list">
+
+
+                    <div class="auth-feature">
+
+                        <span class="auth-feature-icon">
+                            01
+                        </span>
+
+                        <span>
+                            Registra proyectos y documentos
+                            de investigación.
+                        </span>
+
+                    </div>
+
+
+                    <div class="auth-feature">
+
+                        <span class="auth-feature-icon">
+                            02
+                        </span>
+
+                        <span>
+                            Participa como estudiante,
+                            docente o egresado.
+                        </span>
+
+                    </div>
+
+
+                    <div class="auth-feature">
+
+                        <span class="auth-feature-icon">
+                            03
+                        </span>
+
+                        <span>
+                            Da seguimiento al proceso de
+                            revisión y publicación.
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ======================================
+             FORMULARIO
+             ====================================== -->
+
+        <section
+            class="
+                auth-content
+                auth-content-register
+            "
+        >
+
+            <div
+                class="
+                    auth-card
+                    auth-card-wide
+                "
+            >
+
+
+                <div class="auth-heading">
+
+                    <h2>
+                        Crear una cuenta
+                    </h2>
+
+                    <p>
+                        Completa tus datos para formar
+                        parte de InvestigaTec.
+                    </p>
+
+                </div>
+
+
+
+                <form
+                    class="auth-form"
+                    action="#"
+                    method="post"
+                >
+
+
+                    <!-- ==================================
+                         DATOS PERSONALES
+                         ================================== -->
+
+                    <div class="form-row">
+
+
+                        <div>
+
+                            <label
+                                class="form-label"
+                                for="nombre"
+                            >
+                                Nombre
+                                <span class="required">
+                                    *
+                                </span>
+                            </label>
+
+                            <input
+                                class="form-control"
+                                id="nombre"
+                                name="nombre"
+                                type="text"
+                                placeholder="Nombre"
+                                autocomplete="given-name"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div>
+
+                            <label
+                                class="form-label"
+                                for="apellidos"
+                            >
+                                Apellidos
+                                <span class="required">
+                                    *
+                                </span>
+                            </label>
+
+                            <input
+                                class="form-control"
+                                id="apellidos"
+                                name="apellidos"
+                                type="text"
+                                placeholder="Apellidos"
+                                autocomplete="family-name"
+                                required
+                            >
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <!-- CORREO -->
+
+                    <div>
+
+                        <label
+                            class="form-label"
+                            for="correo"
+                        >
+                            Correo electrónico
+                            <span class="required">*</span>
+                        </label>
+
+                        <input
+                            class="form-control"
+                            id="correo"
+                            name="correo"
+                            type="email"
+                            placeholder="correo@ejemplo.com"
+                            autocomplete="email"
+                            required
+                        >
+
+                    </div>
+
+
+
+                    <!-- ==================================
+                         TIPO DE USUARIO
+                         ================================== -->
+
+                    <div>
+
+                        <p class="user-type-title">
+                            ¿Cuál es tu relación con el ITCJ?
+                            <span class="required">*</span>
+                        </p>
+
+
+                        <div class="user-type-grid">
+
+
+                            <!-- ESTUDIANTE -->
+
+                            <div class="user-type-option">
+
+                                <input
+                                    id="tipo-estudiante"
+                                    type="radio"
+                                    name="tipo_usuario"
+                                    value="ESTUDIANTE"
+                                    checked
+                                >
+
+                                <label
+                                    class="user-type-label"
+                                    for="tipo-estudiante"
+                                >
+
+                                    <strong>
+                                        Estudiante
+                                    </strong>
+
+                                    <span>
+                                        Actualmente estudio
+                                        en el ITCJ.
+                                    </span>
+
+                                </label>
+
+                            </div>
+
+
+
+                            <!-- DOCENTE -->
+
+                            <div class="user-type-option">
+
+                                <input
+                                    id="tipo-docente"
+                                    type="radio"
+                                    name="tipo_usuario"
+                                    value="DOCENTE"
+                                >
+
+                                <label
+                                    class="user-type-label"
+                                    for="tipo-docente"
+                                >
+
+                                    <strong>
+                                        Docente
+                                    </strong>
+
+                                    <span>
+                                        Formo parte del
+                                        personal docente.
+                                    </span>
+
+                                </label>
+
+                            </div>
+
+
+
+                            <!-- EGRESADO -->
+
+                            <div class="user-type-option">
+
+                                <input
+                                    id="tipo-egresado"
+                                    type="radio"
+                                    name="tipo_usuario"
+                                    value="EGRESADO"
+                                >
+
+                                <label
+                                    class="user-type-label"
+                                    for="tipo-egresado"
+                                >
+
+                                    <strong>
+                                        Egresado
+                                    </strong>
+
+                                    <span>
+                                        Concluí mis estudios
+                                        en el ITCJ.
+                                    </span>
+
+                                </label>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- ==================================
+                         ESTUDIANTE
+                         ================================== -->
+
+                    <section
+                        class="profile-fields"
+                        data-profile-fields="ESTUDIANTE"
+                    >
+
+                        <h3 class="profile-fields-title">
+                            Información de estudiante
+                        </h3>
+
+
+                        <div class="profile-fields-grid">
+
+
+                            <div>
+
+                                <label
+                                    class="form-label"
+                                    for="estudiante-control"
+                                >
+                                    Número de control
+                                    <span class="required">
+                                        *
+                                    </span>
+                                </label>
+
+                                <input
+                                    class="form-control"
+                                    id="estudiante-control"
+                                    name="num_control"
+                                    type="text"
+                                    placeholder="Número de control"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <div>
+
+                                <label
+                                    class="form-label"
+                                    for="estudiante-carrera"
+                                >
+                                    Carrera
+                                    <span class="required">
+                                        *
+                                    </span>
+                                </label>
+
+                                <select
+                                    class="form-control"
+                                    id="estudiante-carrera"
+                                    name="id_carrera"
+                                    required
+                                >
+
+                                    <option
+                                        value=""
+                                        selected
+                                        disabled
+                                    >
+                                        Selecciona una carrera
+                                    </option>
+
+                                    <option value="1">
+                                        Ingeniería en Sistemas
+                                        Computacionales
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                        </div>
+
+                    </section>
+
+
+
+                    <!-- ==================================
+                         DOCENTE
+                         ================================== -->
+
+                    <section
+                        class="profile-fields"
+                        data-profile-fields="DOCENTE"
+                    >
+
+                        <h3 class="profile-fields-title">
+                            Información de docente
+                        </h3>
+
+
+                        <div class="profile-fields-grid">
+
+
+                            <div>
+
+                                <label
+                                    class="form-label"
+                                    for="docente-empleado"
+                                >
+                                    Número de empleado
+                                    <span class="required">
+                                        *
+                                    </span>
+                                </label>
+
+                                <input
+                                    class="form-control"
+                                    id="docente-empleado"
+                                    name="num_empleado"
+                                    type="text"
+                                    placeholder="Número de empleado"
+                                    required
+                                    disabled
+                                >
+
+                            </div>
+
+
+                            <div>
+
+                                <label
+                                    class="form-label"
+                                    for="docente-departamento"
+                                >
+                                    Departamento
+                                    <span class="required">
+                                        *
+                                    </span>
+                                </label>
+
+                                <select
+                                    class="form-control"
+                                    id="docente-departamento"
+                                    name="id_departamento"
+                                    required
+                                    disabled
+                                >
+
+                                    <option
+                                        value=""
+                                        selected
+                                        disabled
+                                    >
+                                        Selecciona
+                                        un departamento
+                                    </option>
+
+                                    <option value="1">
+                                        Sistemas y Computación
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                        </div>
+
+                    </section>
+
+
+
+                    <!-- ==================================
+                         EGRESADO
+                         ================================== -->
+
+                    <section
+                        class="profile-fields"
+                        data-profile-fields="EGRESADO"
+                    >
+
+                        <h3 class="profile-fields-title">
+                            Información de egresado
+                        </h3>
+
+
+                        <div class="profile-fields-grid">
+
+
+                            <div>
+
+                                <label
+                                    class="form-label"
+                                    for="egresado-control"
+                                >
+                                    Número de control
+                                </label>
+
+                                <input
+                                    class="form-control"
+                                    id="egresado-control"
+                                    name="num_control"
+                                    type="text"
+                                    placeholder="Número de control"
+                                    disabled
+                                >
+
+                            </div>
+
+
+                            <div>
+
+                                <label
+                                    class="form-label"
+                                    for="egresado-carrera"
+                                >
+                                    Carrera
+                                    <span class="required">
+                                        *
+                                    </span>
+                                </label>
+
+                                <select
+                                    class="form-control"
+                                    id="egresado-carrera"
+                                    name="id_carrera"
+                                    required
+                                    disabled
+                                >
+
+                                    <option
+                                        value=""
+                                        selected
+                                        disabled
+                                    >
+                                        Selecciona una carrera
+                                    </option>
+
+                                    <option value="1">
+                                        Ingeniería en Sistemas
+                                        Computacionales
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                        </div>
+
+                    </section>
+
+
+
+                    <!-- ==================================
+                         CONTRASEÑA
+                         ================================== -->
+
+                    <div class="form-row">
+
+
+                        <div>
+
+                            <label
+                                class="form-label"
+                                for="password"
+                            >
+                                Contraseña
+                                <span class="required">
+                                    *
+                                </span>
+                            </label>
+
+
+                            <div class="input-wrapper">
+
+                                <input
+                                    class="
+                                        form-control
+                                        password-input
+                                    "
+                                    id="password"
+                                    name="password"
+                                    type="password"
+                                    minlength="8"
+                                    placeholder="Mínimo 8 caracteres"
+                                    autocomplete="new-password"
+                                    required
+                                >
+
+                                <button
+                                    class="password-toggle"
+                                    type="button"
+                                    data-password-toggle="password"
+                                >
+                                    Mostrar
+                                </button>
+
+                            </div>
+
+                            <span class="form-help">
+                                Utiliza al menos
+                                8 caracteres.
+                            </span>
+
+                        </div>
+
+
+
+                        <div>
+
+                            <label
+                                class="form-label"
+                                for="confirmar-password"
+                            >
+                                Confirmar contraseña
+                                <span class="required">
+                                    *
+                                </span>
+                            </label>
+
+
+                            <div class="input-wrapper">
+
+                                <input
+                                    class="
+                                        form-control
+                                        password-input
+                                    "
+                                    id="confirmar-password"
+                                    type="password"
+                                    minlength="8"
+                                    placeholder="Repite la contraseña"
+                                    autocomplete="new-password"
+                                    required
+                                >
+
+                                <button
+                                    class="password-toggle"
+                                    type="button"
+                                    data-password-toggle="confirmar-password"
+                                >
+                                    Mostrar
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <!-- AVISO -->
+
+                    <div class="form-notice">
+
+                        Los campos mostrados cambian de
+                        acuerdo con el tipo de usuario
+                        seleccionado.
+
+                    </div>
+
+
+
+                    <!-- BOTÓN -->
+
+                    <button
+                        class="
+                            btn
+                            btn-primary
+                            btn-block
+                            auth-submit
+                        "
+                        type="submit"
+                    >
+                        Crear cuenta
+                    </button>
+
+
+                </form>
+
+
+
+                <div class="auth-divider">
+                    ¿Ya tienes una cuenta?
+                </div>
+
+
+                <p class="auth-footer-text">
+
+                    <a
+                        class="auth-link"
+                        href="./login.html"
+                    >
+                        Iniciar sesión
+                    </a>
+
+                </p>
+
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+
+    <script
+        src="../assets/js/main.js"
+    ></script>
+
+
+</body>
+
+</html>

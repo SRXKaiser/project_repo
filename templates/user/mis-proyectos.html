@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Mis proyectos | InvestigaTec</title>
+
+    <link
+        rel="stylesheet"
+        href="../assets/css/styles.css"
+    >
+</head>
+
+<body class="app-body">
+
+
+    <!-- HEADER -->
+
+    <header class="app-header">
+
+        <div class="app-header-inner">
+
+            <div
+                style="
+                    display:flex;
+                    align-items:center;
+                    gap:14px;
+                "
+            >
+
+                <button
+                    class="app-mobile-menu"
+                    type="button"
+                    data-app-menu
+                >
+                    ☰
+                </button>
+
+                <a
+                    class="app-brand"
+                    href="./dashboard.html"
+                >
+                    <div class="app-brand-mark">
+                        IT
+                    </div>
+
+                    <div class="app-brand-text">
+                        <strong>InvestigaTec</strong>
+                        <span>
+                            Repositorio de Investigación
+                        </span>
+                    </div>
+                </a>
+
+            </div>
+
+
+            <div class="app-user">
+
+                <div class="user-avatar">
+                    AM
+                </div>
+
+                <div class="user-info">
+                    <strong>Ana Martínez</strong>
+                    <span>Estudiante</span>
+                </div>
+
+                <button
+                    class="user-menu-button"
+                    type="button"
+                >
+                    ▾
+                </button>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- SIDEBAR -->
+
+    <aside
+        class="app-sidebar"
+        data-app-sidebar
+    >
+
+        <div class="sidebar-section">
+
+            <span class="sidebar-label">
+                Mi espacio
+            </span>
+
+            <nav class="sidebar-nav">
+
+                <a
+                    class="sidebar-link"
+                    href="./dashboard.html"
+                >
+                    <span class="sidebar-icon">IN</span>
+                    Inicio
+                </a>
+
+                <a
+                    class="sidebar-link active"
+                    href="./mis-proyectos.html"
+                >
+                    <span class="sidebar-icon">MP</span>
+                    Mis proyectos
+                </a>
+
+                <a
+                    class="sidebar-link"
+                    href="./proyecto-form.html"
+                >
+                    <span class="sidebar-icon">+</span>
+                    Crear proyecto
+                </a>
+
+                <a
+                    class="sidebar-link"
+                    href="../public/explorar.html"
+                >
+                    <span class="sidebar-icon">EX</span>
+                    Explorar
+                </a>
+
+            </nav>
+
+        </div>
+
+
+        <div class="sidebar-section">
+
+            <span class="sidebar-label">
+                Cuenta
+            </span>
+
+            <nav class="sidebar-nav">
+
+                <a
+                    class="sidebar-link"
+                    href="#"
+                >
+                    <span class="sidebar-icon">PE</span>
+                    Mi perfil
+                </a>
+
+                <a
+                    class="sidebar-link"
+                    href="../auth/login.html"
+                >
+                    <span class="sidebar-icon">SA</span>
+                    Cerrar sesión
+                </a>
+
+            </nav>
+
+        </div>
+
+    </aside>
+
+
+    <!-- CONTENIDO -->
+
+    <main class="app-main">
+
+        <div class="app-container">
+
+
+            <div class="page-heading">
+
+                <div>
+                    <h1>Mis proyectos</h1>
+
+                    <p>
+                        Consulta los proyectos en los que
+                        participas y da seguimiento a su
+                        estado.
+                    </p>
+                </div>
+
+                <a
+                    class="btn btn-primary"
+                    href="./proyecto-form.html"
+                >
+                    + Crear proyecto
+                </a>
+
+            </div>
+
+
+            <!-- BUSCADOR -->
+
+            <div class="toolbar">
+
+                <input
+                    class="form-control toolbar-search"
+                    type="search"
+                    placeholder="Buscar entre mis proyectos..."
+                >
+
+                <select
+                    class="form-control"
+                    style="max-width:220px;"
+                >
+                    <option>
+                        Todos los estados
+                    </option>
+
+                    <option>Borrador</option>
+                    <option>En revisión</option>
+                    <option>Requiere cambios</option>
+                    <option>Aprobado</option>
+                    <option>Publicado</option>
+                    <option>Rechazado</option>
+                </select>
+
+            </div>
+
+
+            <!-- TABLA -->
+
+            <section class="projects-table-card">
+
+                <table class="projects-table">
+
+                    <thead>
+                        <tr>
+                            <th>Proyecto</th>
+                            <th>Participación</th>
+                            <th>Estado</th>
+                            <th>Actualización</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+
+
+                    <tbody>
+
+                        <tr>
+
+                            <td>
+                                <span class="table-project-title">
+                                    Sistema inteligente para
+                                    análisis de información
+                                    académica
+                                </span>
+
+                                <span class="table-project-area">
+                                    Inteligencia Artificial
+                                </span>
+                            </td>
+
+                            <td>
+                                Autor
+                            </td>
+
+                            <td>
+                                <span
+                                    class="
+                                        status
+                                        status-review
+                                    "
+                                >
+                                    En revisión
+                                </span>
+                            </td>
+
+                            <td>
+                                20 sep. 2026
+                            </td>
+
+                            <td>
+                                <div class="table-actions">
+
+                                    <a
+                                        class="
+                                            btn
+                                            btn-outline
+                                            btn-small
+                                        "
+                                        href="./proyecto-detalle.html"
+                                    >
+                                        Ver
+                                    </a>
+
+                                </div>
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                <span class="table-project-title">
+                                    Análisis de datos académicos
+                                </span>
+
+                                <span class="table-project-area">
+                                    Bases de Datos
+                                </span>
+                            </td>
+
+                            <td>
+                                Autor
+                            </td>
+
+                            <td>
+                                <span
+                                    class="
+                                        status
+                                        status-draft
+                                    "
+                                >
+                                    Borrador
+                                </span>
+                            </td>
+
+                            <td>
+                                18 sep. 2026
+                            </td>
+
+                            <td>
+                                <div class="table-actions">
+
+                                    <a
+                                        class="
+                                            btn
+                                            btn-outline
+                                            btn-small
+                                        "
+                                        href="./proyecto-detalle.html"
+                                    >
+                                        Ver
+                                    </a>
+
+                                    <a
+                                        class="
+                                            btn
+                                            btn-primary
+                                            btn-small
+                                        "
+                                        href="./proyecto-form.html"
+                                    >
+                                        Editar
+                                    </a>
+
+                                </div>
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                <span class="table-project-title">
+                                    Plataforma de gestión
+                                    universitaria
+                                </span>
+
+                                <span class="table-project-area">
+                                    Desarrollo de Software
+                                </span>
+                            </td>
+
+                            <td>
+                                Autor
+                            </td>
+
+                            <td>
+                                <span
+                                    class="
+                                        status
+                                        status-published
+                                    "
+                                >
+                                    Publicado
+                                </span>
+                            </td>
+
+                            <td>
+                                10 sep. 2026
+                            </td>
+
+                            <td>
+                                <div class="table-actions">
+
+                                    <a
+                                        class="
+                                            btn
+                                            btn-outline
+                                            btn-small
+                                        "
+                                        href="./proyecto-detalle.html"
+                                    >
+                                        Ver
+                                    </a>
+
+                                </div>
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                <span class="table-project-title">
+                                    Aplicación móvil para
+                                    seguimiento académico
+                                </span>
+
+                                <span class="table-project-area">
+                                    Desarrollo de Software
+                                </span>
+                            </td>
+
+                            <td>
+                                Colaborador
+                            </td>
+
+                            <td>
+                                <span
+                                    class="
+                                        status
+                                        status-changes
+                                    "
+                                >
+                                    Requiere cambios
+                                </span>
+                            </td>
+
+                            <td>
+                                7 sep. 2026
+                            </td>
+
+                            <td>
+                                <div class="table-actions">
+
+                                    <a
+                                        class="
+                                            btn
+                                            btn-outline
+                                            btn-small
+                                        "
+                                        href="./proyecto-detalle.html"
+                                    >
+                                        Ver
+                                    </a>
+
+                                </div>
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </section>
+
+
+        </div>
+
+    </main>
+
+
+    <script src="../assets/js/main.js"></script>
+
+</body>
+</html>

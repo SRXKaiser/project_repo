@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Administración | InvestigaTec
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="../assets/css/styles.css"
+    >
+</head>
+
+<body class="app-body">
+
+
+<header class="app-header">
+
+    <div class="app-header-inner">
+
+        <div style="display:flex;align-items:center;gap:14px;">
+
+            <button
+                class="app-mobile-menu"
+                type="button"
+                data-app-menu
+            >
+                ☰
+            </button>
+
+            <a
+                class="app-brand"
+                href="./dashboard.html"
+            >
+
+                <div class="app-brand-mark">
+                    IT
+                </div>
+
+                <div class="app-brand-text">
+                    <strong>InvestigaTec</strong>
+                    <span>
+                        Repositorio de Investigación
+                    </span>
+                </div>
+
+            </a>
+
+        </div>
+
+
+        <div class="app-user">
+
+            <div class="user-avatar">
+                AD
+            </div>
+
+            <div class="user-info">
+                <strong>Administrador</strong>
+                <span>Administrador</span>
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- SIDEBAR -->
+
+<aside
+    class="app-sidebar"
+    data-app-sidebar
+>
+
+    <div class="sidebar-section">
+
+        <span class="sidebar-label">
+            Mi espacio
+        </span>
+
+        <nav class="sidebar-nav">
+
+            <a
+                class="sidebar-link"
+                href="../user/dashboard.html"
+            >
+                <span class="sidebar-icon">IN</span>
+                Mi panel
+            </a>
+
+            <a
+                class="sidebar-link"
+                href="../user/mis-proyectos.html"
+            >
+                <span class="sidebar-icon">MP</span>
+                Mis proyectos
+            </a>
+
+            <a
+                class="sidebar-link"
+                href="../public/explorar.html"
+            >
+                <span class="sidebar-icon">EX</span>
+                Explorar
+            </a>
+
+        </nav>
+
+    </div>
+
+
+    <div class="sidebar-section">
+
+        <span class="sidebar-label">
+            Administración
+        </span>
+
+        <nav class="sidebar-nav">
+
+            <a
+                class="sidebar-link active"
+                href="./dashboard.html"
+            >
+                <span class="sidebar-icon">AD</span>
+                Panel administrativo
+            </a>
+
+            <a
+                class="sidebar-link"
+                href="./usuarios.html"
+            >
+                <span class="sidebar-icon">US</span>
+                Usuarios
+            </a>
+
+            <a
+                class="sidebar-link"
+                href="./catalogos.html"
+            >
+                <span class="sidebar-icon">CA</span>
+                Catálogos
+            </a>
+
+            <a
+                class="sidebar-link"
+                href="./responsables.html"
+            >
+                <span class="sidebar-icon">RD</span>
+                Responsables
+            </a>
+
+        </nav>
+
+    </div>
+
+
+    <div class="sidebar-section">
+
+        <span class="sidebar-label">
+            Cuenta
+        </span>
+
+        <nav class="sidebar-nav">
+
+            <a
+                class="sidebar-link"
+                href="../auth/login.html"
+            >
+                <span class="sidebar-icon">SA</span>
+                Cerrar sesión
+            </a>
+
+        </nav>
+
+    </div>
+
+</aside>
+
+
+<main class="app-main">
+
+    <div class="app-container">
+
+
+        <div class="page-heading">
+
+            <div>
+
+                <span class="admin-heading-badge">
+                    Administración
+                </span>
+
+                <h1>
+                    Panel administrativo
+                </h1>
+
+                <p>
+                    Gestiona usuarios, catálogos y
+                    responsables de departamento.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- ESTADÍSTICAS -->
+
+        <section class="admin-stats">
+
+            <article class="admin-stat-card">
+
+                <div class="admin-stat-top">
+                    <span class="admin-stat-icon">
+                        US
+                    </span>
+                </div>
+
+                <strong>148</strong>
+
+                <span>
+                    Usuarios registrados
+                </span>
+
+            </article>
+
+
+            <article class="admin-stat-card">
+
+                <div class="admin-stat-top">
+                    <span class="admin-stat-icon">
+                        PR
+                    </span>
+                </div>
+
+                <strong>120</strong>
+
+                <span>
+                    Proyectos registrados
+                </span>
+
+            </article>
+
+
+            <article class="admin-stat-card">
+
+                <div class="admin-stat-top">
+                    <span class="admin-stat-icon">
+                        RV
+                    </span>
+                </div>
+
+                <strong>8</strong>
+
+                <span>
+                    Pendientes de revisión
+                </span>
+
+            </article>
+
+
+            <article class="admin-stat-card">
+
+                <div class="admin-stat-top">
+                    <span class="admin-stat-icon">
+                        DP
+                    </span>
+                </div>
+
+                <strong>5</strong>
+
+                <span>
+                    Departamentos
+                </span>
+
+            </article>
+
+        </section>
+
+
+        <section class="admin-dashboard-grid">
+
+
+            <!-- ACCESOS -->
+
+            <article class="dashboard-card">
+
+                <div class="dashboard-card-header">
+                    <h2>
+                        Administración
+                    </h2>
+                </div>
+
+                <div class="dashboard-card-body">
+
+                    <div class="admin-shortcuts">
+
+
+                        <a
+                            class="admin-shortcut"
+                            href="./usuarios.html"
+                        >
+                            <strong>
+                                Usuarios
+                            </strong>
+
+                            <span>
+                                Consulta usuarios y administra
+                                el estado de sus cuentas.
+                            </span>
+                        </a>
+
+
+                        <a
+                            class="admin-shortcut"
+                            href="./catalogos.html"
+                        >
+                            <strong>
+                                Catálogos
+                            </strong>
+
+                            <span>
+                                Gestiona departamentos,
+                                carreras y áreas temáticas.
+                            </span>
+                        </a>
+
+
+                        <a
+                            class="admin-shortcut"
+                            href="./responsables.html"
+                        >
+                            <strong>
+                                Responsables
+                            </strong>
+
+                            <span>
+                                Asigna responsables a los
+                                departamentos.
+                            </span>
+                        </a>
+
+
+                        <a
+                            class="admin-shortcut"
+                            href="../review/dashboard.html"
+                        >
+                            <strong>
+                                Revisión global
+                            </strong>
+
+                            <span>
+                                Consulta proyectos pendientes
+                                de cualquier departamento.
+                            </span>
+                        </a>
+
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- INFORMACIÓN -->
+
+            <aside class="dashboard-card">
+
+                <div class="dashboard-card-header">
+
+                    <h2>
+                        Estado del sistema
+                    </h2>
+
+                </div>
+
+
+                <div class="dashboard-card-body">
+
+                    <div class="activity-list">
+
+                        <div class="activity-item">
+
+                            <span class="activity-dot"></span>
+
+                            <div>
+                                <strong>
+                                    Usuarios activos
+                                </strong>
+
+                                <span>
+                                    La mayoría de las cuentas
+                                    registradas están activas.
+                                </span>
+                            </div>
+
+                        </div>
+
+
+                        <div class="activity-item">
+
+                            <span class="activity-dot"></span>
+
+                            <div>
+                                <strong>
+                                    Proyectos pendientes
+                                </strong>
+
+                                <span>
+                                    Hay proyectos esperando
+                                    revisión departamental.
+                                </span>
+                            </div>
+
+                        </div>
+
+
+                        <div class="activity-item">
+
+                            <span class="activity-dot"></span>
+
+                            <div>
+                                <strong>
+                                    Catálogos disponibles
+                                </strong>
+
+                                <span>
+                                    Los catálogos pueden
+                                    administrarse desde este
+                                    panel.
+                                </span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </aside>
+
+
+        </section>
+
+
+    </div>
+
+</main>
+
+
+<script src="../assets/js/main.js"></script>
+
+</body>
+</html>

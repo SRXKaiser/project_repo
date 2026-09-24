@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Proyectos pendientes | InvestigaTec
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="../assets/css/styles.css"
+    >
+
+</head>
+
+
+<body class="app-body">
+
+
+    <!-- HEADER -->
+
+    <header class="app-header">
+
+        <div class="app-header-inner">
+
+
+            <div
+                style="
+                    display:flex;
+                    align-items:center;
+                    gap:14px;
+                "
+            >
+
+                <button
+                    class="app-mobile-menu"
+                    type="button"
+                    data-app-menu
+                >
+                    ☰
+                </button>
+
+
+                <a
+                    class="app-brand"
+                    href="../user/dashboard.html"
+                >
+
+                    <div class="app-brand-mark">
+                        IT
+                    </div>
+
+                    <div class="app-brand-text">
+
+                        <strong>
+                            InvestigaTec
+                        </strong>
+
+                        <span>
+                            Repositorio de Investigación
+                        </span>
+
+                    </div>
+
+                </a>
+
+            </div>
+
+
+            <div class="app-user">
+
+                <div class="user-avatar">
+                    LR
+                </div>
+
+                <div class="user-info">
+
+                    <strong>
+                        Laura Ramírez
+                    </strong>
+
+                    <span>
+                        Docente · Responsable
+                    </span>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </header>
+
+
+
+    <!-- SIDEBAR -->
+
+    <aside
+        class="app-sidebar"
+        data-app-sidebar
+    >
+
+
+        <!-- MI ESPACIO -->
+
+        <div class="sidebar-section">
+
+            <span class="sidebar-label">
+                Mi espacio
+            </span>
+
+
+            <nav class="sidebar-nav">
+
+
+                <a
+                    class="sidebar-link"
+                    href="../user/dashboard.html"
+                >
+
+                    <span class="sidebar-icon">
+                        IN
+                    </span>
+
+                    Inicio
+
+                </a>
+
+
+                <a
+                    class="sidebar-link"
+                    href="../user/mis-proyectos.html"
+                >
+
+                    <span class="sidebar-icon">
+                        MP
+                    </span>
+
+                    Mis proyectos
+
+                </a>
+
+
+                <a
+                    class="sidebar-link"
+                    href="../user/proyecto-form.html"
+                >
+
+                    <span class="sidebar-icon">
+                        +
+                    </span>
+
+                    Crear proyecto
+
+                </a>
+
+
+                <a
+                    class="sidebar-link"
+                    href="../public/explorar.html"
+                >
+
+                    <span class="sidebar-icon">
+                        EX
+                    </span>
+
+                    Explorar
+
+                </a>
+
+
+            </nav>
+
+        </div>
+
+
+
+        <!-- REVISIÓN -->
+
+        <div class="sidebar-section">
+
+            <span class="sidebar-label">
+                Revisión
+            </span>
+
+
+            <nav class="sidebar-nav">
+
+                <a
+                    class="sidebar-link active"
+                    href="./pendientes.html"
+                >
+
+                    <span class="sidebar-icon">
+                        RV
+                    </span>
+
+                    Proyectos pendientes
+
+                </a>
+
+            </nav>
+
+        </div>
+
+
+
+        <!-- CUENTA -->
+
+        <div class="sidebar-section">
+
+            <span class="sidebar-label">
+                Cuenta
+            </span>
+
+            <nav class="sidebar-nav">
+
+                <a
+                    class="sidebar-link"
+                    href="#"
+                >
+                    <span class="sidebar-icon">
+                        PE
+                    </span>
+
+                    Mi perfil
+                </a>
+
+                <a
+                    class="sidebar-link"
+                    href="../auth/login.html"
+                >
+                    <span class="sidebar-icon">
+                        SA
+                    </span>
+
+                    Cerrar sesión
+                </a>
+
+            </nav>
+
+        </div>
+
+
+    </aside>
+
+
+
+    <!-- CONTENIDO -->
+
+    <main class="app-main">
+
+        <div class="app-container">
+
+
+            <div class="page-heading">
+
+                <div>
+
+                    <h1>
+                        Proyectos pendientes
+                    </h1>
+
+                    <p>
+                        Revisa los proyectos enviados al
+                        Departamento de Sistemas y
+                        Computación.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- RESUMEN -->
+
+            <section class="review-summary">
+
+
+                <article class="review-summary-card">
+
+                    <strong>
+                        3
+                    </strong>
+
+                    <span>
+                        Pendientes de revisión
+                    </span>
+
+                </article>
+
+
+                <article class="review-summary-card">
+
+                    <strong>
+                        5
+                    </strong>
+
+                    <span>
+                        Aprobados
+                    </span>
+
+                </article>
+
+
+                <article class="review-summary-card">
+
+                    <strong>
+                        2
+                    </strong>
+
+                    <span>
+                        Requieren cambios
+                    </span>
+
+                </article>
+
+
+            </section>
+
+
+
+            <!-- FILTRO -->
+
+            <div class="toolbar">
+
+                <input
+                    class="form-control toolbar-search"
+                    type="search"
+                    placeholder="Buscar proyecto..."
+                >
+
+                <span
+                    class="
+                        status
+                        status-review
+                    "
+                >
+                    En revisión
+                </span>
+
+            </div>
+
+
+
+            <!-- PROYECTOS -->
+
+            <section class="review-list">
+
+
+                <!-- PROYECTO 1 -->
+
+                <article class="review-project-card">
+
+                    <div>
+
+                        <span class="badge">
+                            Inteligencia Artificial
+                        </span>
+
+                        <h2>
+                            Sistema inteligente para
+                            análisis de información académica
+                        </h2>
+
+                        <p>
+                            Aplicación de técnicas de
+                            inteligencia artificial para
+                            analizar información académica.
+                        </p>
+
+                        <div class="review-project-meta">
+
+                            <span>
+                                Ana Martínez
+                            </span>
+
+                            <span>
+                                Enviado: 20 sep. 2026
+                            </span>
+
+                            <span>
+                                Sistemas y Computación
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="review-project-actions">
+
+                        <a
+                            class="btn btn-primary"
+                            href="./proyecto.html"
+                        >
+                            Revisar proyecto
+                        </a>
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- PROYECTO 2 -->
+
+                <article class="review-project-card">
+
+                    <div>
+
+                        <span class="badge">
+                            Desarrollo de Software
+                        </span>
+
+                        <h2>
+                            Plataforma para seguimiento
+                            de proyectos universitarios
+                        </h2>
+
+                        <p>
+                            Plataforma para organizar
+                            participantes, documentación
+                            y seguimiento de proyectos.
+                        </p>
+
+                        <div class="review-project-meta">
+
+                            <span>
+                                Daniel Torres
+                            </span>
+
+                            <span>
+                                Enviado: 19 sep. 2026
+                            </span>
+
+                            <span>
+                                Sistemas y Computación
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="review-project-actions">
+
+                        <a
+                            class="btn btn-primary"
+                            href="./revision-proyecto.html"
+                        >
+                            Revisar proyecto
+                        </a>
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- PROYECTO 3 -->
+
+                <article class="review-project-card">
+
+                    <div>
+
+                        <span class="badge">
+                            Redes y Ciberseguridad
+                        </span>
+
+                        <h2>
+                            Evaluación de mecanismos de
+                            seguridad en redes académicas
+                        </h2>
+
+                        <p>
+                            Estudio de mecanismos de
+                            protección y análisis de
+                            seguridad en infraestructura
+                            de red.
+                        </p>
+
+                        <div class="review-project-meta">
+
+                            <span>
+                                Mariana López
+                            </span>
+
+                            <span>
+                                Enviado: 18 sep. 2026
+                            </span>
+
+                            <span>
+                                Sistemas y Computación
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="review-project-actions">
+
+                        <a
+                            class="btn btn-primary"
+                            href="./revision-proyecto.html"
+                        >
+                            Revisar proyecto
+                        </a>
+
+                    </div>
+
+                </article>
+
+
+            </section>
+
+
+        </div>
+
+    </main>
+
+
+    <script
+        src="../assets/js/main.js"
+    ></script>
+
+
+</body>
+
+</html>

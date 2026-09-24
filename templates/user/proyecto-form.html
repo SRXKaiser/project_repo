@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Crear proyecto | InvestigaTec</title>
+
+    <link
+        rel="stylesheet"
+        href="../assets/css/styles.css"
+    >
+</head>
+
+<body class="app-body">
+
+
+    <!-- HEADER -->
+
+    <header class="app-header">
+
+        <div class="app-header-inner">
+
+            <div
+                style="
+                    display:flex;
+                    align-items:center;
+                    gap:14px;
+                "
+            >
+
+                <button
+                    class="app-mobile-menu"
+                    type="button"
+                    data-app-menu
+                >
+                    ☰
+                </button>
+
+                <a
+                    class="app-brand"
+                    href="./dashboard.html"
+                >
+                    <div class="app-brand-mark">
+                        IT
+                    </div>
+
+                    <div class="app-brand-text">
+                        <strong>InvestigaTec</strong>
+                        <span>
+                            Repositorio de Investigación
+                        </span>
+                    </div>
+                </a>
+
+            </div>
+
+
+            <div class="app-user">
+
+                <div class="user-avatar">
+                    AM
+                </div>
+
+                <div class="user-info">
+                    <strong>Ana Martínez</strong>
+                    <span>Estudiante</span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- SIDEBAR -->
+
+    <aside
+        class="app-sidebar"
+        data-app-sidebar
+    >
+
+        <div class="sidebar-section">
+
+            <span class="sidebar-label">
+                Mi espacio
+            </span>
+
+            <nav class="sidebar-nav">
+
+                <a
+                    class="sidebar-link"
+                    href="./dashboard.html"
+                >
+                    <span class="sidebar-icon">IN</span>
+                    Inicio
+                </a>
+
+                <a
+                    class="sidebar-link"
+                    href="./mis-proyectos.html"
+                >
+                    <span class="sidebar-icon">MP</span>
+                    Mis proyectos
+                </a>
+
+                <a
+                    class="sidebar-link active"
+                    href="./proyecto-form.html"
+                >
+                    <span class="sidebar-icon">+</span>
+                    Crear proyecto
+                </a>
+
+                <a
+                    class="sidebar-link"
+                    href="../public/explorar.html"
+                >
+                    <span class="sidebar-icon">EX</span>
+                    Explorar
+                </a>
+
+            </nav>
+
+        </div>
+
+    </aside>
+
+
+    <!-- CONTENIDO -->
+
+    <main class="app-main">
+
+        <div class="app-container">
+
+
+            <div class="page-heading">
+
+                <div>
+
+                    <h1>
+                        Crear proyecto
+                    </h1>
+
+                    <p>
+                        Registra la información necesaria
+                        para preparar tu proyecto antes de
+                        enviarlo a revisión.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="project-form-layout">
+
+
+                <!-- FORMULARIO PRINCIPAL -->
+
+                <div>
+
+
+                    <!-- INFORMACIÓN GENERAL -->
+
+                    <section class="form-card">
+
+                        <div class="form-card-header">
+
+                            <h2>
+                                Información general
+                            </h2>
+
+                            <p>
+                                Datos principales del proyecto.
+                            </p>
+
+                        </div>
+
+
+                        <div class="form-card-body">
+
+                            <div class="form-stack">
+
+
+                                <div>
+
+                                    <label
+                                        class="form-label"
+                                        for="titulo"
+                                    >
+                                        Título del proyecto
+                                        <span class="required">
+                                            *
+                                        </span>
+                                    </label>
+
+                                    <input
+                                        class="form-control"
+                                        id="titulo"
+                                        type="text"
+                                        placeholder="Escribe el título del proyecto"
+                                    >
+
+                                </div>
+
+
+                                <div>
+
+                                    <label
+                                        class="form-label"
+                                        for="resumen"
+                                    >
+                                        Resumen
+                                        <span class="required">
+                                            *
+                                        </span>
+                                    </label>
+
+                                    <textarea
+                                        class="form-control"
+                                        id="resumen"
+                                        placeholder="Describe el proyecto, sus objetivos y alcance..."
+                                    ></textarea>
+
+                                </div>
+
+
+                                <div>
+
+                                    <label
+                                        class="form-label"
+                                        for="departamento"
+                                    >
+                                        Departamento
+                                        <span class="required">
+                                            *
+                                        </span>
+                                    </label>
+
+                                    <select
+                                        class="form-control"
+                                        id="departamento"
+                                    >
+                                        <option>
+                                            Sistemas y Computación
+                                        </option>
+                                    </select>
+
+                                </div>
+
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- ÁREAS -->
+
+                    <section class="form-card">
+
+                        <div class="form-card-header">
+
+                            <h2>
+                                Áreas temáticas
+                            </h2>
+
+                            <p>
+                                Selecciona las áreas relacionadas
+                                con la investigación.
+                            </p>
+
+                        </div>
+
+
+                        <div class="form-card-body">
+
+                            <div class="tag-selector">
+
+
+                                <div class="selectable-tag">
+
+                                    <input
+                                        id="area-ia"
+                                        type="checkbox"
+                                    >
+
+                                    <label for="area-ia">
+                                        Inteligencia Artificial
+                                    </label>
+
+                                </div>
+
+
+                                <div class="selectable-tag">
+
+                                    <input
+                                        id="area-sw"
+                                        type="checkbox"
+                                    >
+
+                                    <label for="area-sw">
+                                        Desarrollo de Software
+                                    </label>
+
+                                </div>
+
+
+                                <div class="selectable-tag">
+
+                                    <input
+                                        id="area-bd"
+                                        type="checkbox"
+                                    >
+
+                                    <label for="area-bd">
+                                        Bases de Datos
+                                    </label>
+
+                                </div>
+
+
+                                <div class="selectable-tag">
+
+                                    <input
+                                        id="area-red"
+                                        type="checkbox"
+                                    >
+
+                                    <label for="area-red">
+                                        Redes y Ciberseguridad
+                                    </label>
+
+                                </div>
+
+
+                                <div class="selectable-tag">
+
+                                    <input
+                                        id="area-iot"
+                                        type="checkbox"
+                                    >
+
+                                    <label for="area-iot">
+                                        Internet de las Cosas
+                                    </label>
+
+                                </div>
+
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- PALABRAS CLAVE -->
+
+                    <section class="form-card">
+
+                        <div class="form-card-header">
+
+                            <h2>
+                                Palabras clave
+                            </h2>
+
+                            <p>
+                                Agrega conceptos que faciliten
+                                encontrar el proyecto.
+                            </p>
+
+                        </div>
+
+
+                        <div class="form-card-body">
+
+                            <div class="keyword-input-row">
+
+                                <input
+                                    class="form-control"
+                                    type="text"
+                                    placeholder="Ej. inteligencia artificial"
+                                >
+
+                                <button
+                                    class="btn btn-outline"
+                                    type="button"
+                                >
+                                    Agregar
+                                </button>
+
+                            </div>
+
+
+                            <div class="keyword-list">
+
+                                <span class="keyword">
+                                    inteligencia artificial
+                                </span>
+
+                                <span class="keyword">
+                                    análisis de datos
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- PARTICIPANTES -->
+
+                    <section class="form-card">
+
+                        <div class="form-card-header">
+
+                            <h2>
+                                Participantes
+                            </h2>
+
+                            <p>
+                                Administra autores, asesores
+                                y colaboradores.
+                            </p>
+
+                        </div>
+
+
+                        <div class="form-card-body">
+
+                            <button
+                                class="btn btn-outline"
+                                type="button"
+                            >
+                                + Agregar participante
+                            </button>
+
+
+                            <div class="participant-list">
+
+
+                                <div class="participant-row">
+
+                                    <div class="participant-info">
+
+                                        <strong>
+                                            Ana Martínez
+                                        </strong>
+
+                                        <span>
+                                            Autor · Orden 1
+                                        </span>
+
+                                    </div>
+
+                                    <span class="badge">
+                                        Creador
+                                    </span>
+
+                                </div>
+
+
+                                <div class="participant-row">
+
+                                    <div class="participant-info">
+
+                                        <strong>
+                                            Carlos Hernández
+                                        </strong>
+
+                                        <span>
+                                            Autor · Orden 2
+                                        </span>
+
+                                    </div>
+
+                                    <button
+                                        class="
+                                            btn
+                                            btn-outline
+                                            btn-small
+                                        "
+                                        type="button"
+                                    >
+                                        Quitar
+                                    </button>
+
+                                </div>
+
+
+                                <div class="participant-row">
+
+                                    <div class="participant-info">
+
+                                        <strong>
+                                            Dra. Laura Ramírez
+                                        </strong>
+
+                                        <span>
+                                            Asesor
+                                        </span>
+
+                                    </div>
+
+                                    <button
+                                        class="
+                                            btn
+                                            btn-outline
+                                            btn-small
+                                        "
+                                        type="button"
+                                    >
+                                        Quitar
+                                    </button>
+
+                                </div>
+
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- PDF -->
+
+                    <section class="form-card">
+
+                        <div class="form-card-header">
+
+                            <h2>
+                                Documento del proyecto
+                            </h2>
+
+                            <p>
+                                Adjunta el documento principal
+                                en formato PDF.
+                            </p>
+
+                        </div>
+
+
+                        <div class="form-card-body">
+
+                            <div class="upload-box">
+
+                                <strong>
+                                    Archivo PDF
+                                </strong>
+
+                                <span>
+                                    Tamaño máximo: 10 MB
+                                </span>
+
+                                <input
+                                    id="archivo"
+                                    type="file"
+                                    accept="application/pdf"
+                                >
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                </div>
+
+
+                <!-- PANEL LATERAL -->
+
+                <aside class="form-sidebar-card">
+
+                    <h3>
+                        Estado del proyecto
+                    </h3>
+
+                    <p>
+                        El proyecto permanecerá como
+                        borrador mientras completas
+                        su información.
+                    </p>
+
+
+                    <span
+                        class="
+                            status
+                            status-draft
+                        "
+                    >
+                        Borrador
+                    </span>
+
+
+                    <div
+                        class="form-sidebar-actions"
+                        style="margin-top:20px;"
+                    >
+
+                        <button
+                            class="btn btn-primary btn-block"
+                            type="button"
+                        >
+                            Guardar borrador
+                        </button>
+
+
+                        <a
+                            class="btn btn-outline btn-block"
+                            href="./mis-proyectos.html"
+                        >
+                            Cancelar
+                        </a>
+
+                    </div>
+
+
+                    <div
+                        class="form-notice"
+                        style="margin-top:20px;"
+                    >
+                        Antes de enviar a revisión,
+                        el proyecto deberá contar con
+                        al menos un autor, un área
+                        temática, una palabra clave
+                        y un archivo PDF.
+                    </div>
+
+                </aside>
+
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <script src="../assets/js/main.js"></script>
+
+</body>
+</html>
