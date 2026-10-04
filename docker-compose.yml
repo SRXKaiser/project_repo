@@ -1,0 +1,14 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+
+    container_name: investigate-backend
+
+    env_file:
+      - ./backend/.env.docker
+
+    ports:
+      - "8000:8000"
+      
