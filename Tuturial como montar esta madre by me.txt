@@ -1,0 +1,2808 @@
+========================================
+MANUAL PARA TONTOS DE PROJECT REPOSITORY
+========================================
+
+O también:
+
+"CÓMO LEVANTAR EL PROYECTO SIN SACRIFICAR A NADIE"
+
+Tecnologías:
+Docker
+PostgreSQL
+FastAPI
+SQLAlchemy
+Alembic
+Swagger
+JWT
+CORS
+Git
+
+
+============================================================
+¿PARA QUIÉN ES ESTE MANUAL?
+============================================================
+
+Este manual está pensado para:
+
+- La persona que hará el frontend.
+- La persona que documentará el proyecto.
+- Alguien que acaba de clonar el repositorio.
+- Alguien que no sabe qué demonios es Alembic.
+- Alguien que piensa que Docker es una marca de pantalones.
+- Básicamente, cualquiera que necesite entender el proyecto desde cero.
+
+La idea NO es asumir que ya sabes Docker, bases de datos o backend.
+
+Vamos a explicar:
+
+1. Qué hace el proyecto.
+2. Qué hace cada tecnología.
+3. Cómo descargarlo.
+4. Cómo configurarlo.
+5. Cómo levantarlo.
+6. Cómo comprobar que funciona.
+7. Cómo funciona la base de datos.
+8. Qué demonios es Alembic.
+9. Cómo probar la API.
+10. Cómo conectar el frontend.
+11. Cómo funciona el login.
+12. Qué hacer cuando algo explota.
+13. Qué debería documentar la persona encargada de documentación.
+
+
+============================================================
+¿QUÉ ES PROJECT REPOSITORY?
+============================================================
+
+Project Repository es una aplicación web orientada a la gestión de proyectos de investigación.
+
+El sistema está dividido principalmente en:
+
+FRONTEND
+BACKEND
+BASE DE DATOS
+
+
+Visualmente:
+
+USUARIO
+   |
+   | hace clic
+   v
+FRONTEND
+localhost:5173
+   |
+   | HTTP / JSON
+   v
+BACKEND - FASTAPI
+localhost:8000
+   |
+   | SQLAlchemy
+   v
+POSTGRESQL
+
+
+El frontend es lo que ve el usuario.
+
+El backend procesa las acciones.
+
+PostgreSQL guarda la información.
+
+
+EJEMPLO:
+
+Un usuario quiere ver los proyectos.
+
+1. El usuario entra a la página.
+
+2. El frontend pide:
+
+   "Dame los proyectos."
+
+3. El frontend hace una petición al backend:
+
+   GET /proyectos
+
+4. FastAPI recibe la petición.
+
+5. FastAPI utiliza SQLAlchemy.
+
+6. SQLAlchemy consulta PostgreSQL.
+
+7. PostgreSQL devuelve los proyectos.
+
+8. FastAPI devuelve los datos en JSON.
+
+9. El frontend muestra los proyectos.
+
+
+Más o menos:
+
+Usuario
+   |
+   v
+Frontend
+   |
+   | GET /proyectos
+   v
+FastAPI
+   |
+   v
+SQLAlchemy
+   |
+   v
+PostgreSQL
+   |
+   v
+SQLAlchemy
+   |
+   v
+FastAPI
+   |
+   | JSON
+   v
+Frontend
+   |
+   v
+Usuario ve los proyectos
+
+
+============================================================
+DICCIONARIO PARA PENDEJOS
+============================================================
+
+------------------------------------------------------------------------------------------
+API (Estoy seguro de que el pobre bastardo que va a documentar no sabe que es una api)
+------------------------------------------------------------------------------------------
+
+Es la forma en la que frontend y backend se comunican.
+
+Ejemplo:
+
+GET /proyectos
+
+significa:
+
+"Backend, dame los proyectos."
+
+
+POST /proyectos
+
+significa:
+
+"Backend, quiero crear un proyecto."
+
+
+------------------------------
+ENDPOINT
+------------------------------
+
+Un endpoint es una dirección concreta de la API.
+
+Ejemplos:
+
+GET /proyectos
+
+GET /usuarios
+
+POST /auth/login
+
+GET /departamentos
+
+
+Cada endpoint hace algo diferente.
+
+
+------------------------------
+FASTAPI
+------------------------------
+
+FastAPI es el framework de Python utilizado para crear el backend.
+
+Es quien recibe las peticiones HTTP.
+
+Ejemplo:
+
+Frontend:
+
+"Quiero los proyectos."
+
+FastAPI:
+
+"Ok, voy a buscarlos."
+
+
+------------------------------
+POSTGRESQL
+------------------------------
+
+PostgreSQL es la base de datos.
+
+Aquí se guarda la información de forma permanente.
+
+Por ejemplo:
+
+usuarios
+proyectos
+carreras
+departamentos
+áreas temáticas
+palabras clave
+etc.
+
+
+Piensa en PostgreSQL como un Excel con esteroides y muchísimo más serio.
+
+
+------------------------------
+SQLALCHEMY
+------------------------------
+
+SQLAlchemy permite que Python se comunique cómodamente con PostgreSQL.
+
+Sin SQLAlchemy tendríamos que escribir mucho SQL manualmente.
+
+Con SQLAlchemy podemos tener modelos Python.
+
+Ejemplo conceptual:
+
+class Usuario:
+    id
+    nombre
+    email
+    password
+
+
+SQLAlchemy sabe cómo relacionar eso con una tabla de PostgreSQL.
+
+
+------------------------------
+ALEMBIC
+------------------------------
+
+Alembic controla los cambios en la ESTRUCTURA de la base de datos.
+
+Es básicamente:
+
+"Git, pero para la estructura de PostgreSQL."
+
+Supongamos que tenemos:
+
+usuarios
+
+id
+nombre
+email
+
+
+Pero mañana necesitamos:
+
+usuarios
+
+id
+nombre
+email
+foto_perfil
+
+
+No queremos decirle a cada desarrollador:
+
+"Entra a PostgreSQL y crea manualmente la columna."
+
+Creamos una MIGRACIÓN.
+
+Alembic aplica esa migración.
+
+Y listo.
+
+
+------------------------------
+DOCKER
+------------------------------
+
+Docker crea un entorno controlado donde ejecutar nuestro programa.
+
+Evita situaciones como:
+
+"Yo tengo Python 3.X"
+
+"Yo instalé otra versión"
+
+"A mí me falta una dependencia"
+
+"Pues en mi PC funciona"
+
+
+Docker básicamente dice:
+
+"Me vale madres qué tengas instalado.
+Voy a crear mi propio entorno."
+
+
+------------------------------
+DOCKER IMAGE
+------------------------------
+
+Una imagen es como una plantilla.
+
+Dice:
+
+- qué sistema base utilizar;
+- qué versión de Python;
+- qué dependencias instalar;
+- qué archivos copiar;
+- qué comando ejecutar.
+
+
+------------------------------
+CONTAINER
+------------------------------
+
+Un container es una imagen EJECUTÁNDOSE.
+
+Imagen:
+
+"Así debería ser el backend."
+
+Container:
+
+"El backend está vivo."
+
+
+------------------------------
+DOCKERFILE
+------------------------------
+
+El Dockerfile explica cómo construir una imagen.
+
+Nuestro Dockerfile conceptualmente hace:
+
+Python
+   |
+   v
+crear /app
+   |
+   v
+instalar dependencias
+   |
+   v
+copiar backend
+   |
+   v
+ejecutar Uvicorn
+
+
+------------------------------
+DOCKER COMPOSE
+------------------------------
+
+Docker Compose coordina varios servicios.
+
+Idealmente nuestro proyecto terminaría teniendo:
+
+docker-compose.yml
+
+   |
+   +---- backend
+   |
+   +---- postgres
+   |
+   +---- posiblemente frontend
+
+
+Entonces podríamos ejecutar:
+
+docker compose up
+
+y levantar prácticamente todo.
+
+
+------------------------------
+JWT
+------------------------------
+
+JWT significa JSON Web Token.
+
+Se utiliza para autenticación.
+
+Cuando haces login:
+
+email + contraseña
+       |
+       v
+backend comprueba
+       |
+       v
+token JWT
+       |
+       v
+frontend
+
+
+Después el frontend utiliza ese token para demostrar:
+
+"Hola, soy un usuario que ya inició sesión."
+
+
+------------------------------
+CORS
+------------------------------
+
+CORS es una protección del navegador.
+
+Nuestro frontend podría estar en:
+
+http://localhost:5173
+
+y nuestro backend:
+
+http://localhost:8000
+
+
+El navegador considera que son orígenes diferentes.
+
+Por eso el backend tiene que decir:
+
+"Sí, permito que localhost:5173 me haga peticiones."
+
+
+------------------------------
+SWAGGER
+------------------------------
+
+Swagger es probablemente el mejor amigo de la persona que haga el frontend.
+
+FastAPI genera automáticamente documentación interactiva.
+
+Normalmente está en:
+
+http://localhost:8000/docs
+
+
+Ahí podemos:
+
+- ver endpoints;
+- ver parámetros;
+- ver JSON esperado;
+- ver respuestas;
+- probar peticiones;
+- probar autenticación.
+
+
+============================================================
+3. ESTRUCTURA DEL REPOSITORIO
+============================================================
+
+Repositorio:
+
+https://github.com/SRXKaiser/project_repo
+
+
+La estructura general es aproximadamente:
+
+project_repo/
+|
++-- backend/
+|   |
+|   +-- app/
+|   |
+|   +-- alembic/
+|   |
+|   +-- alembic.ini
+|   |
+|   +-- Dockerfile
+|   |
+|   +-- .env.example
+|
++-- templates/
+|
++-- docker-compose.yml
+|
++-- requirements.txt
+|
++-- .gitignore
+
+
+============================================================
+4. ¿QUÉ HACE CADA ARCHIVO/CARPETA?
+============================================================
+
+
+------------------------------
+backend/app/
+------------------------------
+
+Aquí vive la aplicación FastAPI.
+
+Esta es una de las carpetas MÁS IMPORTANTES.
+
+Aquí encontraremos la lógica del backend.
+
+
+------------------------------
+backend/app/main.py
+------------------------------
+
+Es el punto de entrada de FastAPI.
+
+Aquí se crea la aplicación.
+
+Conceptualmente:
+
+app = FastAPI()
+
+
+También se registran diferentes rutas del proyecto.
+
+Por ejemplo:
+
+autenticación
+usuarios
+proyectos
+carreras
+departamentos
+áreas temáticas
+palabras clave
+archivos
+workflow
+administración
+
+
+Cuando Docker ejecuta:
+
+uvicorn app.main:app
+
+está diciendo:
+
+"Busca app/main.py y ejecuta la aplicación FastAPI llamada app."
+
+
+------------------------------
+MODELOS
+------------------------------
+
+Los modelos representan las entidades de nuestra base de datos.
+
+Por ejemplo:
+
+Usuario
+Proyecto
+Carrera
+Departamento
+
+
+Conceptualmente:
+
+MODELO PYTHON
+
+Usuario
+- id
+- nombre
+- email
+
+
+se relaciona con:
+
+TABLA POSTGRESQL
+
+usuarios
+
+id | nombre | email
+
+
+------------------------------
+ROUTERS
+------------------------------
+
+Los routers organizan los endpoints.
+
+En vez de poner 300 endpoints en main.py podemos separarlos.
+
+Por ejemplo:
+
+auth
+usuarios
+proyectos
+carreras
+departamentos
+
+
+Así el proyecto no termina siendo una sopa de código.
+
+
+------------------------------
+backend/alembic/
+------------------------------
+
+Aquí viven las migraciones.
+
+Especialmente:
+
+alembic/versions/
+
+
+Cada archivo representa cambios realizados a la estructura de la base de datos.
+
+
+------------------------------
+backend/alembic.ini
+------------------------------
+
+Configuración principal de Alembic.
+
+
+------------------------------
+backend/alembic/env.py
+------------------------------
+
+Conecta Alembic con SQLAlchemy y nuestros modelos.
+
+Gracias a esto Alembic puede saber:
+
+"Estos son los modelos actuales."
+
+y compararlos con:
+
+"Esta es la base de datos actual."
+
+
+------------------------------
+backend/Dockerfile
+------------------------------
+
+Explica cómo construir el backend dentro de Docker.
+
+El comando final ejecuta algo equivalente a:
+
+uvicorn app.main:app --host 0.0.0.0 --port 8000
+
+
+Esto significa:
+
+Ejecuta FastAPI.
+
+Escucha conexiones.
+
+Utiliza el puerto 8000.
+
+
+------------------------------
+requirements.txt
+------------------------------
+
+Lista las dependencias de Python.
+
+Por ejemplo:
+
+FastAPI
+SQLAlchemy
+Alembic
+psycopg
+JWT
+Argon2
+etc.
+
+
+Básicamente:
+
+"Estas son las cosas que Python necesita instalar para que el proyecto no explote."
+
+
+------------------------------
+docker-compose.yml
+------------------------------
+
+Le dice a Docker cómo levantar los servicios.
+
+IMPORTANTE:
+
+Actualmente el docker-compose del proyecto levanta principalmente el BACKEND.
+
+PostgreSQL todavía no está declarado como servicio dentro del Compose.
+
+Esto es algo que convendría mejorar.
+
+
+------------------------------
+.gitignore
+------------------------------
+
+Le dice a Git:
+
+"Estas cosas NO las subas."
+
+
+Por ejemplo:
+
+archivos temporales
+entornos
+secretos
+.env.docker
+
+
+============================================================
+5. INSTALAR LO NECESARIO
+============================================================
+
+La persona que vaya a trabajar necesita:
+
+1. Git
+
+2. Docker Desktop
+
+3. VS Code o editor similar
+
+4. Node.js cuando vaya a trabajar con el frontend
+
+
+Si todo el backend funciona mediante Docker NO debería ser necesario instalar manualmente:
+
+FastAPI
+SQLAlchemy
+Alembic
+psycopg
+etc.
+
+
+Docker se encargará.
+
+
+============================================================
+6. DESCARGAR EL PROYECTO
+============================================================
+
+Abrir una terminal.
+
+Ejecutar:
+
+git clone https://github.com/SRXKaiser/project_repo.git
+
+
+¿QUÉ HACE ESTO?
+
+Git descarga una copia del repositorio.
+
+
+Después:
+
+cd project_repo
+
+
+¿QUÉ HACE ESTO?
+
+Nos mete dentro de la carpeta del proyecto.
+
+
+Después:
+
+git status
+
+
+¿QUÉ HACE ESTO?
+
+Nos dice:
+
+- en qué rama estamos;
+- si tenemos archivos modificados;
+- si Git está feliz o está a punto de llorar.
+
+
+============================================================
+7. VARIABLES DE ENTORNO
+============================================================
+
+Hay información que NO debemos escribir directamente en el código.
+
+Ejemplo:
+
+contraseña de PostgreSQL
+JWT_SECRET
+URL de base de datos
+
+
+Para eso utilizamos archivos .env.
+
+
+Existe:
+
+backend/.env.example
+
+
+Ese archivo es una PLANTILLA.
+
+
+Podría contener algo parecido a:
+
+DATABASE_URL=postgresql+psycopg://postgres:TU_PASSWORD@localhost:5432/project_repo_db
+
+JWT_SECRET=CAMBIAME
+
+JWT_ALGORITHM=HS256
+
+ACCESS_TOKEN_EXPIRE_MINUTES=60
+
+CORS_ORIGINS=http://localhost:5173
+
+
+IMPORTANTE:
+
+docker-compose.yml espera actualmente:
+
+backend/.env.docker
+
+
+Pero .env.docker está ignorado por Git.
+
+
+Eso significa:
+
+Cuando alguien hace git clone NO recibe ese archivo.
+
+
+Tiene que crearlo.
+
+
+¿POR QUÉ?
+
+Porque no queremos subir secretos a GitHub.
+
+
+REGLA:
+
+.env.example
+SÍ se sube.
+
+.env.docker con secretos reales
+NO se sube.
+
+
+============================================================
+8. DATABASE_URL EXPLICADO PARA HUMANOS
+============================================================
+
+Tenemos algo parecido a:
+
+postgresql+psycopg://postgres:password@localhost:5432/project_repo_db
+
+
+Separémoslo:
+
+
+postgresql+psycopg
+
+Significa:
+
+"Usaremos PostgreSQL mediante el driver psycopg."
+
+
+postgres
+
+Es el usuario.
+
+
+password
+
+Es la contraseña.
+
+
+localhost
+
+Es dónde está PostgreSQL.
+
+
+5432
+
+Es el puerto estándar de PostgreSQL.
+
+
+project_repo_db
+
+Es el nombre de la base de datos.
+
+
+O sea:
+
+TIPO://USUARIO:CONTRASEÑA@SERVIDOR:PUERTO/BASE_DE_DATOS
+
+
+============================================================
+9. LEVANTAR DOCKER
+============================================================
+
+Primero:
+
+ABRIR DOCKER DESKTOP.
+
+
+Sí.
+
+En serio.
+
+Si Docker Desktop está cerrado y ejecutas comandos Docker probablemente no funcionará.
+
+
+Desde project_repo:
+
+docker compose up --build -d
+
+
+¿QUÉ SIGNIFICA?
+
+
+docker compose
+
+"Utiliza docker-compose.yml."
+
+
+up
+
+"Levanta los servicios."
+
+
+--build
+
+"Reconstruye las imágenes si es necesario."
+
+
+-d
+
+"Déjalo ejecutándose en segundo plano."
+
+
+En resumen:
+
+"Construye lo necesario y arranca el proyecto."
+
+
+============================================================
+10. VER SI DOCKER ESTÁ VIVO
+============================================================
+
+Ejecutar:
+
+docker compose ps
+
+
+Esto muestra los servicios.
+
+
+Si queremos ver qué está diciendo el backend:
+
+docker compose logs -f backend
+
+
+¿QUÉ HACE -f?
+
+Significa "follow".
+
+La terminal seguirá mostrando nuevos logs.
+
+
+Para salir de los logs:
+
+CTRL + C
+
+
+NO mata necesariamente el container.
+
+Solo deja de seguir los logs.
+
+
+============================================================
+11. COMPROBAR FASTAPI
+============================================================
+
+Abrir:
+
+http://localhost:8000
+
+
+El backend debería responder.
+
+
+También podemos probar:
+
+http://localhost:8000/health
+
+
+Esto comprueba que la API está viva.
+
+
+Y:
+
+http://localhost:8000/health/database
+
+
+Esto sirve para comprobar si FastAPI consigue hablar con PostgreSQL.
+
+
+Si devuelve algo parecido a:
+
+{
+    "database": "connected"
+}
+
+
+Felicidades.
+
+La cadena:
+
+FastAPI
+   |
+   v
+SQLAlchemy
+   |
+   v
+PostgreSQL
+
+
+está funcionando.
+
+
+============================================================
+12. SWAGGER: EL MEJOR AMIGO DEL FRONTEND
+============================================================
+
+Abrir:
+
+http://localhost:8000/docs
+
+
+Esta página es generada automáticamente por FastAPI.
+
+
+Aquí aparecen los endpoints.
+
+
+Por ejemplo:
+
+AUTH
+
+USUARIOS
+
+PROYECTOS
+
+CARRERAS
+
+DEPARTAMENTOS
+
+ÁREAS TEMÁTICAS
+
+PALABRAS CLAVE
+
+ARCHIVOS
+
+WORKFLOW
+
+ADMINISTRACIÓN
+
+
+Desde Swagger podemos seleccionar un endpoint.
+
+
+Después:
+
+Try it out
+
+
+Rellenamos los datos.
+
+
+Después:
+
+Execute
+
+
+Y Swagger hace la petición.
+
+
+Esto es EXTREMADAMENTE útil.
+
+
+ANTES de programar una pantalla del frontend:
+
+1. Busca el endpoint en Swagger.
+
+2. Pruébalo.
+
+3. Mira qué JSON necesita.
+
+4. Mira qué devuelve.
+
+5. Después programa el frontend.
+
+
+============================================================
+13. ¿QUÉ ES UNA PETICIÓN HTTP?
+============================================================
+
+Los métodos más importantes son:
+
+
+GET
+
+"Quiero obtener información."
+
+
+Ejemplo:
+
+GET /proyectos
+
+
+POST
+
+"Quiero crear algo."
+
+
+Ejemplo:
+
+POST /proyectos
+
+
+PUT / PATCH
+
+"Quiero modificar algo."
+
+
+DELETE
+
+"Quiero eliminar algo."
+
+
+Ejemplo conceptual:
+
+GET /proyectos
+
+Dame proyectos.
+
+
+POST /proyectos
+
+Crea un proyecto.
+
+
+GET /proyectos/5
+
+Dame el proyecto número 5.
+
+
+DELETE /proyectos/5
+
+Elimina el proyecto número 5.
+
+
+============================================================
+14. ¿QUÉ ES JSON?
+============================================================
+
+JSON es el formato que normalmente utilizamos para enviar información entre frontend y backend.
+
+
+Ejemplo:
+
+{
+    "nombre": "Investigación sobre IA",
+    "descripcion": "Proyecto de investigación"
+}
+
+
+Frontend manda JSON.
+
+FastAPI recibe JSON.
+
+FastAPI puede devolver JSON.
+
+
+============================================================
+15. POSTGRESQL
+============================================================
+
+PostgreSQL guarda nuestros datos.
+
+
+Ejemplo conceptual:
+
+
+usuarios
+
+id | nombre | email
+----------------------------
+1  | Juan   | juan@...
+2  | Ana    | ana@...
+
+
+proyectos
+
+id | titulo | estado
+----------------------------
+1  | IA     | activo
+2  | Redes  | terminado
+
+
+Los datos permanecen aunque FastAPI se reinicie, siempre que PostgreSQL y su almacenamiento persistente estén correctamente configurados.
+
+
+============================================================
+16. SQLALCHEMY
+============================================================
+
+SQLAlchemy hace de intermediario.
+
+
+En lugar de decir directamente:
+
+SELECT * FROM usuarios;
+
+
+podemos trabajar desde Python utilizando modelos y consultas del ORM.
+
+
+Entonces:
+
+PYTHON
+   |
+   v
+SQLAlchemy
+   |
+   v
+SQL
+   |
+   v
+PostgreSQL
+
+
+La persona de FRONTEND normalmente NO necesita tocar SQLAlchemy.
+
+
+La persona de BACKEND sí.
+
+
+============================================================
+17. ALEMBIC EXPLICADO PARA TONTOS
+============================================================
+
+Tenemos una tabla:
+
+usuarios
+
+id
+nombre
+email
+
+
+Un día decidimos:
+
+"Necesitamos foto de perfil."
+
+
+Nuestro modelo cambia:
+
+usuarios
+
+id
+nombre
+email
+foto_perfil
+
+
+PROBLEMA:
+
+Cambiar el modelo Python NO significa automáticamente que las bases de datos existentes se actualicen mágicamente.
+
+
+Aquí entra Alembic.
+
+
+Creamos una MIGRACIÓN.
+
+
+La migración básicamente dice:
+
+"Agrega foto_perfil a usuarios."
+
+
+Entonces todos pueden ejecutar:
+
+alembic upgrade head
+
+
+y su base de datos queda actualizada.
+
+
+============================================================
+18. APLICAR MIGRACIONES
+============================================================
+
+Si estamos utilizando el backend dentro de Docker:
+
+docker compose exec backend alembic upgrade head
+
+
+¿QUÉ SIGNIFICA?
+
+
+docker compose exec
+
+"Ejecuta algo dentro de un container que ya está corriendo."
+
+
+backend
+
+"Quiero ejecutarlo dentro del servicio backend."
+
+
+alembic
+
+"Ejecuta Alembic."
+
+
+upgrade
+
+"Avanza las migraciones."
+
+
+head
+
+"Hasta la última migración disponible."
+
+
+TRADUCCIÓN:
+
+"Actualiza mi base de datos hasta la versión más nueva."
+
+
+============================================================
+19. ¿CUÁNDO HACE ESTO LA PERSONA DE FRONTEND?
+============================================================
+
+Cuando:
+
+- acaba de clonar el proyecto;
+- hace git pull y llegaron migraciones nuevas;
+- la base de datos está desactualizada.
+
+
+Su flujo:
+
+git pull
+
+docker compose up -d
+
+docker compose exec backend alembic upgrade head
+
+
+Y listo.
+
+
+NO necesita crear migraciones nuevas.
+
+
+============================================================
+20. CREAR UNA MIGRACIÓN
+============================================================
+
+ESTO NORMALMENTE ES TRABAJO DEL BACKEND.
+
+
+Supongamos que modificamos un modelo.
+
+
+Entonces:
+
+docker compose exec backend alembic revision --autogenerate -m "agregar foto de perfil"
+
+
+¿QUÉ HACE?
+
+Alembic compara:
+
+MODELOS ACTUALES
+
+contra
+
+BASE DE DATOS
+
+
+y genera una propuesta de migración.
+
+
+IMPORTANTE:
+
+AUTOGENERATE NO SIGNIFICA:
+
+"CONFÍA CIEGAMENTE EN MÍ."
+
+
+La migración generada debe revisarse.
+
+
+Después:
+
+docker compose exec backend alembic upgrade head
+
+
+Probamos todo.
+
+
+Después subimos:
+
+- cambio del modelo;
+- archivo de migración.
+
+
+A Git.
+
+
+============================================================
+21. OTROS COMANDOS DE ALEMBIC
+============================================================
+
+Ver migración actual:
+
+docker compose exec backend alembic current
+
+
+Ver historial:
+
+docker compose exec backend alembic history
+
+
+Actualizar:
+
+docker compose exec backend alembic upgrade head
+
+
+Retroceder una migración:
+
+docker compose exec backend alembic downgrade -1
+
+
+CUIDADO CON:
+
+downgrade -1
+
+
+Revertir una migración puede modificar/eliminar estructura y, dependiendo de la migración, afectar datos.
+
+
+No usar a lo loco.
+
+
+============================================================
+22. GIT + ALEMBIC
+============================================================
+
+BACKEND hace cambios.
+
+
+Backend:
+
+1. Cambia modelo.
+
+2. Crea migración.
+
+3. Prueba migración.
+
+4. git add
+
+5. git commit
+
+6. git push
+
+
+FRONTEND:
+
+1. git pull
+
+2. recibe modelo/migración
+
+3. ejecuta:
+
+docker compose exec backend alembic upgrade head
+
+
+LISTO.
+
+
+La persona de frontend NO debería entrar manualmente a PostgreSQL a crear columnas.
+
+
+Para eso existe Alembic.
+
+
+============================================================
+23. CONECTAR EL FRONTEND
+============================================================
+
+Supongamos:
+
+Frontend:
+
+http://localhost:5173
+
+
+Backend:
+
+http://localhost:8000
+
+
+Podemos configurar en frontend:
+
+VITE_API_URL=http://localhost:8000
+
+
+Después:
+
+const response = await fetch(
+    `${import.meta.env.VITE_API_URL}/proyectos`
+);
+
+const data = await response.json();
+
+
+Esto manda:
+
+Frontend
+   |
+   | GET /proyectos
+   v
+FastAPI
+
+
+FastAPI responde:
+
+[
+    {...},
+    {...}
+]
+
+
+Y frontend muestra los datos.
+
+
+============================================================
+24. ¿POR QUÉ USAR VITE_API_URL?
+============================================================
+
+Porque NO queremos escribir esto 500 veces:
+
+http://localhost:8000
+
+
+por todo el código.
+
+
+Además, mañana producción podría utilizar:
+
+https://api.nuestroproyecto.com
+
+
+Entonces solo cambiamos la variable.
+
+
+Desarrollo:
+
+VITE_API_URL=http://localhost:8000
+
+
+Producción:
+
+VITE_API_URL=https://api.ejemplo.com
+
+
+Mucho mejor.
+
+
+============================================================
+25. CORS
+============================================================
+
+Frontend:
+
+http://localhost:5173
+
+
+Backend:
+
+http://localhost:8000
+
+
+Aunque ambos digan localhost, tienen puertos diferentes.
+
+
+Para el navegador son ORÍGENES diferentes.
+
+
+Entonces FastAPI necesita permitir:
+
+http://localhost:5173
+
+
+Para eso existe:
+
+CORS_ORIGINS
+
+
+Ejemplo:
+
+CORS_ORIGINS=http://localhost:5173
+
+
+Si CORS está mal configurado puedes encontrarte errores en el navegador aunque FastAPI funcione perfectamente.
+
+
+============================================================
+26. LOGIN Y JWT
+============================================================
+
+Usuario introduce:
+
+email
+contraseña
+
+
+Frontend manda eso al backend.
+
+
+Backend:
+
+1. Busca usuario.
+
+2. Comprueba contraseña.
+
+3. Si todo está bien genera JWT.
+
+
+Flujo:
+
+email + password
+       |
+       v
+FastAPI
+       |
+       | verifica
+       v
+JWT
+       |
+       v
+Frontend
+
+
+El JWT puede parecer algo como:
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6...
+
+
+Es normal que parezca que un gato caminó sobre el teclado.
+
+
+============================================================
+27. ENDPOINTS PROTEGIDOS
+============================================================
+
+Algunos endpoints necesitan saber quién eres.
+
+
+Entonces el frontend manda:
+
+Authorization: Bearer TOKEN
+
+
+Conceptualmente:
+
+GET /algo-protegido
+
+Authorization:
+Bearer eyJhbGciOi...
+
+
+Backend comprueba el token.
+
+
+TOKEN VÁLIDO:
+
+200
+todo bien
+
+
+TOKEN INVÁLIDO:
+
+401 Unauthorized
+
+
+============================================================
+28. JWT_SECRET
+============================================================
+
+El backend utiliza un secreto para firmar/verificar tokens.
+
+
+Ejemplo:
+
+JWT_SECRET=ALGO_MUY_SECRETO
+
+
+ESTO NO SE SUBE A GITHUB.
+
+
+Repito:
+
+
+NO.
+
+
+SE.
+
+
+SUBE.
+
+
+A.
+
+
+GITHUB.
+
+
+Porque si publicas secretos reales estás invitando al caos.
+
+
+============================================================
+29. FLUJO DIARIO DE LA PERSONA DE FRONTEND
+============================================================
+
+Al comenzar:
+
+
+1.
+
+Abrir Docker Desktop.
+
+
+2.
+
+Abrir terminal en:
+
+project_repo
+
+
+3.
+
+Traer cambios:
+
+git pull
+
+
+4.
+
+Levantar backend:
+
+docker compose up -d
+
+
+Si hubo cambios importantes de Docker/dependencias:
+
+docker compose up --build -d
+
+
+5.
+
+Actualizar base de datos:
+
+docker compose exec backend alembic upgrade head
+
+
+6.
+
+Comprobar:
+
+http://localhost:8000/health
+
+
+7.
+
+Comprobar base de datos si hace falta:
+
+http://localhost:8000/health/database
+
+
+8.
+
+Abrir:
+
+http://localhost:8000/docs
+
+
+9.
+
+Arrancar frontend.
+
+
+10.
+
+Programar tranquilamente hasta que algo deje de funcionar.
+
+
+Entonces consultar la sección:
+
+"QUÉ HACER CUANDO ALGO EXPLOTA."
+
+
+============================================================
+30. PARAR EL PROYECTO
+============================================================
+
+Ejecutar:
+
+docker compose down
+
+
+Esto detiene los servicios definidos por Compose.
+
+
+Si simplemente quieres ver qué está corriendo:
+
+docker compose ps
+
+
+============================================================
+31. QUÉ HACER CUANDO ALGO EXPLOTA
+============================================================
+
+PRIMERA REGLA:
+
+LEER EL ERROR.
+
+
+No hacer inmediatamente:
+
+- reinstalar Docker;
+- borrar PostgreSQL;
+- borrar migraciones;
+- formatear Windows;
+- llorar;
+- culpar al compañero.
+
+
+Primero:
+
+
+docker compose ps
+
+
+Después:
+
+
+docker compose logs -f backend
+
+
+Lee el error.
+
+
+============================================================
+32. "EL BACKEND NO ARRANCA"
+============================================================
+
+Comprobar:
+
+1. ¿Docker Desktop está abierto?
+
+2. ¿Existe backend/.env.docker?
+
+3. ¿Las variables son correctas?
+
+4. ¿DATABASE_URL es correcta?
+
+5. ¿Hay errores en logs?
+
+
+Ejecutar:
+
+docker compose logs backend
+
+
+Si cambiaron dependencias:
+
+docker compose up --build -d
+
+
+============================================================
+33. "FASTAPI FUNCIONA PERO LA BASE DE DATOS NO"
+============================================================
+
+Abrir:
+
+http://localhost:8000/health/database
+
+
+Si falla:
+
+Revisar:
+
+DATABASE_URL
+
+usuario PostgreSQL
+
+contraseña
+
+host
+
+puerto
+
+nombre de base de datos
+
+si PostgreSQL está ejecutándose
+
+
+IMPORTANTE:
+
+El Compose actual NO levanta PostgreSQL automáticamente.
+
+Esto debe tenerse en cuenta.
+
+
+============================================================
+34. "ME SALE 401"
+============================================================
+
+401 significa:
+
+UNAUTHORIZED
+
+
+Posibles causas:
+
+- no mandaste JWT;
+- JWT inválido;
+- JWT expirado;
+- usuario no autenticado;
+- Authorization está mal escrito.
+
+
+Debe ser algo parecido a:
+
+Authorization: Bearer TOKEN
+
+
+============================================================
+35. "ME SALE ERROR CORS"
+============================================================
+
+Revisar:
+
+CORS_ORIGINS
+
+
+Si frontend está en:
+
+http://localhost:5173
+
+
+debe estar permitido.
+
+
+También revisar que el frontend realmente esté utilizando ese puerto.
+
+
+============================================================
+36. "ALEMBIC EXPLOTÓ"
+============================================================
+
+Primero:
+
+docker compose exec backend alembic current
+
+
+Después:
+
+docker compose exec backend alembic history
+
+
+Comprueba la conexión con PostgreSQL.
+
+
+NO hagas inmediatamente:
+
+- borrar alembic/versions;
+- borrar alembic_version;
+- modificar la BD manualmente;
+- crear migraciones aleatorias.
+
+
+Si hay conflicto de migraciones hay que entender primero qué pasó.
+
+
+============================================================
+37. COMANDOS QUE REALMENTE NECESITAS
+============================================================
+
+DESCARGAR:
+
+git clone https://github.com/SRXKaiser/project_repo.git
+
+
+ENTRAR:
+
+cd project_repo
+
+
+TRAER CAMBIOS:
+
+git pull
+
+
+LEVANTAR:
+
+docker compose up -d
+
+
+RECONSTRUIR Y LEVANTAR:
+
+docker compose up --build -d
+
+
+VER CONTENEDORES:
+
+docker compose ps
+
+
+VER LOGS:
+
+docker compose logs -f backend
+
+
+APLICAR MIGRACIONES:
+
+docker compose exec backend alembic upgrade head
+
+
+VER MIGRACIÓN ACTUAL:
+
+docker compose exec backend alembic current
+
+
+VER HISTORIAL:
+
+docker compose exec backend alembic history
+
+
+PARAR:
+
+docker compose down
+
+
+============================================================
+38. FLUJO COMPLETO DESDE CERO
+============================================================
+
+Una persona nueva debería hacer aproximadamente:
+
+
+PASO 1
+
+Instalar Git.
+
+
+PASO 2
+
+Instalar Docker Desktop.
+
+
+PASO 3
+
+Clonar:
+
+git clone https://github.com/SRXKaiser/project_repo.git
+
+
+PASO 4
+
+Entrar:
+
+cd project_repo
+
+
+PASO 5
+
+Crear/configurar:
+
+backend/.env.docker
+
+
+PASO 6
+
+Asegurarse de que PostgreSQL esté disponible.
+
+
+PASO 7
+
+Levantar:
+
+docker compose up --build -d
+
+
+PASO 8
+
+Ver:
+
+docker compose ps
+
+
+PASO 9
+
+Aplicar migraciones:
+
+docker compose exec backend alembic upgrade head
+
+
+PASO 10
+
+Abrir:
+
+http://localhost:8000/health
+
+
+PASO 11
+
+Abrir:
+
+http://localhost:8000/health/database
+
+
+PASO 12
+
+Abrir:
+
+http://localhost:8000/docs
+
+
+Si todo funciona:
+
+FELICIDADES.
+
+EL BACKEND ESTÁ VIVO.
+
+
+============================================================
+39. ¿QUÉ DEBE ENTENDER LA PERSONA QUE DOCUMENTARÁ?
+============================================================
+
+IMPORTANTE:
+
+Documentar NO significa escribir:
+
+"main.py es el archivo main."
+
+Gracias, Sherlock.
+
+
+Una buena documentación debe explicar:
+
+
+1. ¿QUÉ RESPONSABILIDAD TIENE?
+
+Ejemplo:
+
+main.py inicia FastAPI y registra las rutas de la aplicación.
+
+
+2. ¿QUÉ RECIBE?
+
+Ejemplo:
+
+Un endpoint puede recibir un JSON con los datos de un proyecto.
+
+
+3. ¿QUÉ HACE CON ESO?
+
+Ejemplo:
+
+Valida los datos, comprueba permisos y llama a la lógica correspondiente.
+
+
+4. ¿QUÉ DEVUELVE?
+
+Ejemplo:
+
+Devuelve el proyecto creado en formato JSON.
+
+
+5. ¿DE QUÉ DEPENDE?
+
+Ejemplo:
+
+El endpoint depende de:
+
+- sesión de base de datos;
+- usuario autenticado;
+- modelos;
+- servicios.
+
+
+6. ¿QUÉ PUEDE FALLAR?
+
+Ejemplo:
+
+400 - datos incorrectos
+
+401 - no autenticado
+
+403 - no tiene permisos
+
+404 - no existe
+
+500 - backend dijo "hasta aquí llegué"
+
+
+============================================================
+40. CÓMO DOCUMENTAR UN ENDPOINT
+============================================================
+
+NO hacer solamente:
+
+POST /proyectos
+
+"Crea proyectos."
+
+
+Mejor:
+
+
+ENDPOINT:
+
+POST /proyectos
+
+
+PROPÓSITO:
+
+Crear un nuevo proyecto de investigación.
+
+
+AUTENTICACIÓN:
+
+Requiere usuario autenticado.
+
+
+ENTRADA:
+
+{
+    "titulo": "...",
+    "descripcion": "..."
+}
+
+
+PROCESO:
+
+1. Comprueba autenticación.
+2. Valida datos.
+3. Crea entidad.
+4. Guarda en PostgreSQL.
+5. Devuelve resultado.
+
+
+RESPUESTA:
+
+{
+    "id": 1,
+    "titulo": "...",
+    "descripcion": "..."
+}
+
+
+POSIBLES ERRORES:
+
+400 - datos inválidos
+
+401 - usuario no autenticado
+
+403 - usuario sin permisos
+
+
+Eso SÍ sirve como documentación.
+
+
+============================================================
+41. CÓMO DOCUMENTAR UN MODELO
+============================================================
+
+Ejemplo:
+
+
+MODELO: Proyecto
+
+
+PROPÓSITO:
+
+Representa un proyecto de investigación almacenado en la base de datos.
+
+
+CAMPOS:
+
+id
+Identificador único.
+
+
+titulo
+Nombre del proyecto.
+
+
+descripcion
+Descripción del proyecto.
+
+
+estado
+Estado actual.
+
+
+RELACIONES:
+
+Autores
+Palabras clave
+Área temática
+etc.
+
+
+NO basta con copiar el código.
+
+Hay que explicar qué representa cada cosa.
+
+
+============================================================
+42. CÓMO DOCUMENTAR UNA MIGRACIÓN
+============================================================
+
+No hace falta escribir una novela.
+
+
+Ejemplo:
+
+
+MIGRACIÓN:
+
+Agregar foto_perfil a usuarios.
+
+
+MOTIVO:
+
+Permitir almacenar una imagen asociada al usuario.
+
+
+CAMBIOS:
+
+Tabla usuarios:
+
++ foto_perfil
+
+
+REVERSIÓN:
+
+Eliminar columna foto_perfil.
+
+
+Eso es muchísimo más útil que copiar 40 líneas generadas por Alembic.
+
+
+============================================================
+43. CÓMO DOCUMENTAR DOCKER
+============================================================
+
+Explicar:
+
+1. Qué imagen base utiliza.
+
+2. Qué dependencias instala.
+
+3. Qué código copia.
+
+4. Qué puerto expone.
+
+5. Qué comando ejecuta.
+
+
+Ejemplo conceptual:
+
+
+Docker construye el backend utilizando Python.
+
+Instala las dependencias de requirements.txt.
+
+Copia el código.
+
+Expone el puerto 8000.
+
+Finalmente ejecuta:
+
+uvicorn app.main:app --host 0.0.0.0 --port 8000
+
+
+============================================================
+44. COSAS QUE CONVIENE MEJORAR EN EL REPOSITORIO
+============================================================
+
+Actualmente hay algunas cosas que podemos mejorar para que una persona nueva sufra menos.
+
+
+MEJORA 1:
+
+Añadir PostgreSQL a docker-compose.yml.
+
+
+Ideal:
+
+docker-compose.yml
+
+|
++-- postgres
+|
++-- backend
+
+
+Así:
+
+docker compose up
+
+
+podría levantar ambos.
+
+
+MEJORA 2:
+
+Añadir volumen persistente para PostgreSQL.
+
+
+Así los datos no desaparecen cuando recreamos containers.
+
+
+MEJORA 3:
+
+Añadir healthcheck de PostgreSQL.
+
+
+Así backend puede saber cuándo PostgreSQL está realmente listo.
+
+
+MEJORA 4:
+
+Crear:
+
+backend/.env.docker.example
+
+
+Entonces una persona nueva puede hacer una copia:
+
+.env.docker.example
+        |
+        v
+.env.docker
+
+
+y rellenar sus valores.
+
+
+MEJORA 5:
+
+README.md
+
+
+El README debería tener como mínimo:
+
+- qué es el proyecto;
+- arquitectura;
+- requisitos;
+- instalación;
+- variables;
+- Docker;
+- migraciones;
+- Swagger;
+- flujo de desarrollo.
+
+
+MEJORA 6:
+
+Cuando exista frontend estable:
+
+project_repo/
+
+backend/
+frontend/
+docker-compose.yml
+
+
+Y eventualmente:
+
+docker compose up
+
+
+podría levantar:
+
+PostgreSQL
++
+FastAPI
++
+Frontend
+
+
+============================================================
+45. MAPA MENTAL FINAL
+============================================================
+
+Si después de leer todo olvidaste el 90%, recuerda esto:
+
+
+GIT
+
+Sincroniza el código.
+
+
+DOCKER
+
+Ejecuta el entorno.
+
+
+POSTGRESQL
+
+Guarda datos.
+
+
+SQLALCHEMY
+
+Permite a Python hablar con PostgreSQL.
+
+
+ALEMBIC
+
+Actualiza la estructura de PostgreSQL.
+
+
+FASTAPI
+
+Es el backend/API.
+
+
+SWAGGER
+
+Permite ver y probar la API.
+
+
+JWT
+
+Sirve para autenticación.
+
+
+CORS
+
+Permite que el navegador del frontend hable con el backend.
+
+
+FRONTEND
+
+Es lo que ve y utiliza el usuario.
+
+
+============================================================
+46. LA RUTINA SAGRADA
+============================================================
+
+Para frontend:
+
+
+git pull
+
+docker compose up -d
+
+docker compose exec backend alembic upgrade head
+
+
+Después abrir:
+
+http://localhost:8000/health
+
+http://localhost:8000/docs
+
+
+Después trabajar.
+
+
+Cuando termines:
+
+docker compose down
+
+
+============================================================
+47. REGLAS SAGRADAS DEL PROYECTO
+============================================================
+
+REGLA #1
+
+No subir .env con secretos.
+
+
+REGLA #2
+
+No modificar PostgreSQL manualmente si el cambio debería ser una migración.
+
+
+REGLA #3
+
+Las migraciones nuevas las crea/revisa principalmente backend.
+
+
+REGLA #4
+
+Después de recibir migraciones:
+
+alembic upgrade head
+
+
+REGLA #5
+
+Antes de decir:
+
+"El backend no funciona"
+
+probar Swagger.
+
+
+REGLA #6
+
+Antes de decir:
+
+"Docker no funciona"
+
+mirar:
+
+docker compose logs
+
+
+REGLA #7
+
+Leer el error.
+
+
+REGLA #8
+
+LEER EL MALDITO ERROR.
+
+
+REGLA #9
+
+Si modificas un modelo de la base de datos, piensa:
+
+"¿Necesito una migración?"
+
+
+REGLA #10
+
+No borrar cosas aleatorias hasta que funcione.
+
+Eso no es debugging.
+
+Eso es apostar.
+
+
+============================================================
+48. RESUMEN EN UNA SOLA FRASE
+============================================================
+
+El frontend habla con FastAPI, FastAPI utiliza SQLAlchemy para hablar con PostgreSQL, Alembic mantiene actualizada la estructura de PostgreSQL, Docker nos ayuda a ejecutar todo en un entorno consistente y Swagger nos permite comprobar que la API funciona sin necesitar todavía el frontend.
+
+
+============================================================
+49. SI ERES FRONTEND
+============================================================
+
+Tus mejores amigos son:
+
+http://localhost:8000/docs
+
+y:
+
+docker compose logs -f backend
+
+
+No necesitas convertirte en experto en PostgreSQL, Alembic o SQLAlchemy.
+
+Necesitas entender:
+
+- qué hacen;
+- cómo levantar el backend;
+- cómo aplicar migraciones;
+- cómo probar endpoints;
+- cómo mandar JWT;
+- cómo interpretar errores básicos.
+
+
+============================================================
+50. SI ERES EL POBRE ESTUPIDO QUE VA A DOCUMENTAR
+============================================================
+
+No copies código y lo llames documentación.
+
+Explica:
+
+QUÉ hace.
+
+POR QUÉ existe.
+
+QUÉ recibe.
+
+QUÉ devuelve.
+
+CON QUÉ se relaciona.
+
+QUÉ puede fallar.
+
+Y CÓMO se usa.
+
+
+Si alguien puede leer tu documentación sin abrir el código y entender el flujo general:
+
+BIEN.
+
+
+Si después de leerla tiene que preguntarte:
+
+"Sí, pero... ¿qué hace?"
+
+MAL.
+
+
+============================================================
+FIN
+============================================================
+
+Repositorio:
+
+https://github.com/SRXKaiser/project_repo
+
+
+Recuerda:
+
+Frontend
+   |
+   v
+FastAPI
+   |
+   v
+SQLAlchemy
+   |
+   v
+PostgreSQL
+
+
+Alembic mantiene PostgreSQL actualizado.
+
+Docker mantiene nuestro entorno bajo control.
+
+Swagger evita que frontend tenga que adivinar la API.
+
+Git mantiene al equipo sincronizado.
+
+
+Y cuando algo falle:
+
+
+1. NO ENTRAR EN PÁNICO.
+
+2. LEER EL ERROR.
+
+3. docker compose ps
+
+4. docker compose logs -f backend
+
+5. Revisar /health.
+
+6. Revisar /docs.
+
+7. Revisar /health/database.
+
+8. Preguntarle al de backend qué demonios rompió.
+
+
+Felicidades.
+
+Ahora sabes suficiente para ser peligroso.
+
+
+"No existen preguntas tontas, solo tontos que hacen preguntas v2"
+Atte: Victor con c de c++
+
