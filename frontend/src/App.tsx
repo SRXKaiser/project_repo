@@ -28,7 +28,8 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} /> 
           </Route>
-            <Route path="/dashboard-user" element={<DashboardUser/>} /> 
+          
+          
         </Routes>
       </BrowserRouter>
     </AuthProvider >
