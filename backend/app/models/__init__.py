@@ -15,6 +15,12 @@ from app.models.palabra_clave import PalabraClave
 from app.models.proyecto_palabra_clave import ProyectoPalabraClave
 from app.models.archivo import Archivo
 from app.models.historial_estado import HistorialEstado
+from app.models.recuperacion_acceso import RecuperacionAcceso
+from app.models.notificacion import Notificacion
+from app.models.estudiante_perfil import EstudiantePerfil
+from app.models.version_proyecto import VersionProyecto
+from app.models.resumen_generado import ResumenGenerado
+
 
 __all__ = [
     "Departamento",
@@ -34,4 +40,9 @@ __all__ = [
     "ProyectoPalabraClave",
     "Archivo",
     "HistorialEstado",
+    "RecuperacionAcceso",
+    "Notificacion",
+    "EstudiantePerfil",
+    "VersionProyecto",
+    "ResumenGenerado"
 ]
