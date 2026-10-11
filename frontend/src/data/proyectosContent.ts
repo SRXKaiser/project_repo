@@ -1,0 +1,108 @@
+// Simulación temporal. en lo que existe el backend
+
+export const proyectosContent = [
+  {
+    id: 1,
+    titulo: 'Sistema de riego automatizado con IoT',
+    autor: 'Juan Pérez García',
+    departamento: 'sistemas',
+    materia: 'programacion',
+    palabrasClave: ['iot', 'automatizacion', 'sustentabilidad'],
+    fecha: '2025-08-15',
+    resumen:
+      'Desarrollo de un sistema basado en ESP32 y sensores de humedad para optimizar el riego en cultivos locales.',
+    popularidad: 245,
+    imagen: null,
+  },
+  {
+    id: 2,
+    titulo: 'Análisis predictivo de deserción estudiantil',
+    autor: 'María López',
+    departamento: 'sistemas',
+    materia: 'ia',
+    palabrasClave: ['ia', 'bigdata'],
+    fecha: '2025-06-20',
+    resumen:
+      'Modelo de machine learning que predice estudiantes en riesgo de desertar usando datos históricos.',
+    popularidad: 189,
+    imagen: null,
+  },
+  {
+    id: 3,
+    titulo: 'Optimización de líneas de producción',
+    autor: 'Carlos Ramírez',
+    departamento: 'industrial',
+    materia: 'produccion',
+    palabrasClave: ['automatizacion', 'sustentabilidad'],
+    fecha: '2025-09-01',
+    resumen:
+      'Aplicación de Lean Manufacturing para reducir tiempos muertos en planta maquiladora.',
+    popularidad: 312,
+    imagen: null,
+  },
+  {
+    id: 4,
+    titulo: 'Red inteligente para distribución eléctrica',
+    autor: 'Ana Torres',
+    departamento: 'electrica',
+    materia: 'potencia',
+    palabrasClave: ['iot', 'energias'],
+    fecha: '2024-11-10',
+    resumen:
+      'Diseño de una smart grid con medición bidireccional y monitoreo remoto.',
+    popularidad: 98,
+    imagen: null,
+  },
+  {
+    id: 5,
+    titulo: 'Materiales compuestos para construcción sustentable',
+    autor: 'Roberto Méndez',
+    departamento: 'civil',
+    materia: 'estructuras',
+    palabrasClave: ['sustentabilidad'],
+    fecha: '2025-03-05',
+    resumen:
+      'Evaluación de concretos con agregados reciclados para reducir huella de carbono.',
+    popularidad: 156,
+    imagen: null,
+  },
+  {
+    id: 6,
+    titulo: 'Plataforma blockchain para certificación académica',
+    autor: 'Laura Sánchez',
+    departamento: 'sistemas',
+    materia: 'web',
+    palabrasClave: ['blockchain', 'ia'],
+    fecha: '2025-07-22',
+    resumen:
+      'Sistema descentralizado para emitir y verificar títulos universitarios.',
+    popularidad: 421,
+    imagen: null,
+  },
+  {
+    id: 7,
+    titulo: 'Robot colaborativo para ensamble',
+    autor: 'Diego Fernández',
+    departamento: 'mecanica',
+    materia: 'diseno',
+    palabrasClave: ['robotica', 'automatizacion'],
+    fecha: '2025-05-14',
+    resumen:
+      'Implementación de un cobot para tareas repetitivas en líneas de ensamble.',
+    popularidad: 267,
+    imagen: null,
+  },
+  {
+    id: 8,
+    titulo: 'Marketing digital para PyMEs locales',
+    autor: 'Patricia Ruiz',
+    departamento: 'gestion',
+    materia: 'marketing',
+    palabrasClave: ['ia'],
+    fecha: '2024-12-01',
+    resumen:
+      'Estrategia basada en datos para mejorar presencia digital de pequeñas empresas.',
+    popularidad: 78,
+    imagen: null,
+  },
+];
