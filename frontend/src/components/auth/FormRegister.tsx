@@ -8,15 +8,16 @@ import IndicadorPasos from './IndicadorPasos';
 import TipoUsuarioRadio from './TipoUserRadio';
 import BtnNavegar from './BtnNavegar';
 import AnimacionParte from './AnimacionParte';
+//import { registrarUsuario } from '../../api/auth';
 
-type Tipo_Usuario = 'estudiante' | 'empleado' | 'exalumno' | '';
+type Tipo_Usuario = 'ESTUDIANTE' | 'EMPLEADO' | 'EXALUMNO' | '';
 
 const FormRegister = () => {
   const [paso, setPaso] = useState<1 | 2 | 3 | 4>(1);
   const [direccion, setDireccion] = useState<'adelante' | 'atras'>('adelante');
 
   // 1. datos digitales
-  const [email, setEmail] = useState('');
+  const [correo, setcorreo] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
@@ -27,7 +28,7 @@ const FormRegister = () => {
   
 
   // 3. tipo de usuario
-  const [tipoUsuario, settipoUsuario] = useState<Tipo_Usuario>('');
+  const [tipo_usuario, settipo_usuario] = useState<Tipo_Usuario>('');
 
   // 4. datos por tipo de usuario
 
@@ -42,6 +43,7 @@ const FormRegister = () => {
   const [anio_egreso, setAnio_egreso] = useState('');
 
   const [error, setError] = useState('');
+  const [cargando, setCargando] = useState(false); 
 
   // navegacion entre pasos
   const irAdelante = () => {
@@ -57,7 +59,7 @@ const FormRegister = () => {
   // validaciones que son necesarias antes de pasar al siguiente paso
   const validarPaso1 = (): boolean => {
     if (
-      !email ||
+      !correo ||
       !password ||
       !confirmPassword
     ) {
@@ -90,7 +92,7 @@ const FormRegister = () => {
   };
 
   const validarPaso3 = (): boolean => {
-    if (!tipoUsuario) {
+    if (!tipo_usuario) {
       setError('Selecciona tu tipo de usuario');
       return false;
     }
@@ -99,15 +101,15 @@ const FormRegister = () => {
   };
 
   const validarPaso4 = (): boolean => {
-    if (tipoUsuario === 'estudiante' && (!num_control || !id_carrera || !semestre)) {
+    if (tipo_usuario === 'ESTUDIANTE' && (!num_control || !id_carrera || !semestre)) {
       setError('Completa todos los campos de estudiante');
       return false;
     }
-    if (tipoUsuario === 'empleado' && (!num_empleado || !id_departamento)) {
+    if (tipo_usuario === 'EMPLEADO' && (!num_empleado || !id_departamento)) {
       setError('Completa todos los campos de empleado');
       return false;
     }
-    if (tipoUsuario === 'exalumno' && !anio_egreso) {
+    if (tipo_usuario === 'EXALUMNO' && !anio_egreso) {
       setError('Completa el año de egreso');
       return false;
     }
@@ -123,27 +125,46 @@ const FormRegister = () => {
   };
 
   // submit final 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!validarPaso4()) return;
 
-    const payload = {
-      nombre,
-      apellido_paterno,
-      apellido_materno,
-      tipoUsuario,
-      email,
-      password,
-      ...(tipoUsuario === 'estudiante' && { num_control, id_carrera, semestre }),
-      ...(tipoUsuario === 'empleado' && { num_empleado, id_departamento }),
-      ...(tipoUsuario === 'exalumno' && { anio_egreso }),
-    };
+    setCargando(true);
+    setError('');
 
-    //console.log('Register:', payload);
-    // TODO: llamar a la API
+    // Construir payload con los nombres y tipos que espera el backend
+    // const payload = {
+    //   nombre,
+    //   apellido_paterno,
+    //   apellido_materno,
+    //   correo: email,                            // email → correo
+    //   password,
+    //   tipo_usuario: tipo_usuario.toUpperCase(),  // 'estudiante' → 'ESTUDIANTE'
+    //   ...(tipo_usuario === 'ESTUDIANTE' && {
+    //     num_control,
+    //     id_carrera: Number(id_carrera),         // string → number
+    //     semestre: Number(semestre),             // string → number
+    //   }),
+    //   ...(tipo_usuario === 'EMPLEADO' && {
+    //     num_empleado,
+    //     id_departamento: Number(id_departamento),
+    //   }),
+    //   ...(tipo_usuario === 'EXALUMNO' && {
+    //     anio_egreso: Number(anio_egreso),
+    //   }),
+    // };
+
+    // try {
+    //   const respuesta = await registrarUsuario(payload);
+    //   console.log('Registro exitoso:', respuesta);
+    //   // TODO: redirigir al login o mostrar mensaje de éxito
+    // } catch (err) {
+    //   setError(err instanceof Error ? err.message : 'Error desconocido');
+    // } finally {
+    //   setCargando(false);
+    // }
   };
 
-  // animaciones
   const animacionPaso = direccion === 'adelante' ? 'animate-slide-left' : 'animate-slide-right';
 
   return (
@@ -168,13 +189,13 @@ const FormRegister = () => {
               <>
                
                 <Input
-                  id="email"
-                  label="Email"
+                  id="correo"
+                  label="correo"
                   type="email"
-                  value={email}
-                  onChange={setEmail}
+                  value={correo}
+                  onChange={setcorreo}
                   placeholder="tu@correo.com"
-                  autoComplete="email"
+                  autoComplete="correo"
                   required
                 />
                 <Input
@@ -239,13 +260,13 @@ const FormRegister = () => {
 
             {/* 3: Tipo de usuario*/}
             {paso === 3 && (
-            <TipoUsuarioRadio value={tipoUsuario} onChange={settipoUsuario} />
+            <TipoUsuarioRadio value={tipo_usuario} onChange={settipo_usuario} />
           )}
 
             {/* 4: datos especificos por tipo de usuario*/}
             {paso === 4 && (
               <>
-                {tipoUsuario === 'estudiante' && (
+                {tipo_usuario === 'ESTUDIANTE' && (
                   <>
                     <Input
                       id="num_control"
@@ -259,7 +280,7 @@ const FormRegister = () => {
                     <Input
                       id="id_carrera"
                       label="Carrera"
-                      type="text"
+                      type="number"
                       value={id_carrera}
                       onChange={setId_carrera}
                       placeholder="Ing. en Sistemas Computacionales"
@@ -277,7 +298,7 @@ const FormRegister = () => {
                   </>
                 )}
 
-                {tipoUsuario === 'empleado' && (
+                {tipo_usuario === 'EMPLEADO' && (
                   <>
                     <Input
                       id="num_empleado"
@@ -291,7 +312,7 @@ const FormRegister = () => {
                     <Input
                       id="id_departamento"
                       label="Departamento"
-                      type="text"
+                      type="number"
                       value={id_departamento}
                       onChange={setId_departamento}
                       placeholder="Sistemas y Computación"
@@ -300,7 +321,7 @@ const FormRegister = () => {
                   </>
                 )}
 
-                {tipoUsuario === 'exalumno' && (
+                {tipo_usuario === 'EXALUMNO' && (
                   <Input
                     id="anio_egreso"
                     label="Año de egreso"

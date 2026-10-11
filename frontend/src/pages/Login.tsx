@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import FormLogin from '../components/FormLogin';
+import FormLogin from '../components/auth/FormLogin';
 
 const Login = () => {
   return (

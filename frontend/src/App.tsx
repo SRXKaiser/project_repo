@@ -8,6 +8,7 @@ import ScrollToHash from './components/ScrollTohash';
 import Explorar from './pages/Explorar';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import DashboardUser from './pages/DashBoard-User';
 // import './App.css'
 
 function App() {
@@ -25,9 +26,9 @@ function App() {
           </Route>
           <Route element={<LayoutAuth />}>
             <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            
+            <Route path="/register" element={<Register />} /> 
           </Route>
+            <Route path="/dashboard-user" element={<DashboardUser/>} /> 
         </Routes>
       </BrowserRouter>
     </AuthProvider >

@@ -13,18 +13,29 @@ interface AuthContextValue {
 // ─── Contexto con tipo ───
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
+// ─── Usuario mock temporal (quitar cuando haya backend) ───
+const USUARIO_MOCK: Usuario = {
+  id: 1,
+  name: 'Ana Martínez',
+  email: 'ana@itcj.edu.mx',
+  role: 'estudiante',
+};
+
 // ─── Provider ───
 interface AuthProviderProps {
   children: ReactNode;
 }
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [user, setUser] = useState<Usuario | null>(null);
-  const [loading, setLoading] = useState(true);
+  // ⚠️ TEMPORAL: inicializamos con el mock para que el dashboard funcione
+  const [user, setUser] = useState<Usuario | null>(USUARIO_MOCK);
+  const [loading, setLoading] = useState(false);   // ← ya no está comentado
 
+  // ─── Recuperar usuario del localStorage (cuando tengas backend) ───
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     const token = localStorage.getItem('token');
+
     if (storedUser && token) {
       try {
         setUser(JSON.parse(storedUser));
@@ -33,7 +44,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         localStorage.removeItem('token');
       }
     }
-    setLoading(false);
+    // ⚠️ NO ponemos el mock aquí porque ya está en useState
+    // Cuando tengas backend, cambia el useState inicial a `null` y descomenta el mock por defecto:
+    // else { setUser(USUARIO_MOCK); }
   }, []);
 
   const login = (userData: Usuario, token: string) => {

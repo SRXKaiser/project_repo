@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import FormRegister from '../components/FormRegister';
+import FormRegister from '../components/auth/FormRegister';
 
 const Register = () => {
   return (

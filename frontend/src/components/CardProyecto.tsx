@@ -15,12 +15,13 @@ const CardProyecto = ({ proyecto, onClick }: CardProyectoProps) => {
   return (
     <article
       onClick={() => onClick?.(proyecto)}
-      className="group cursor-pointer bg-[var(--bg)] border border-[var(--cafe)]/20
+      className="group cursor-pointer bg-[var(--bg)] border-2 border-[var(--cafe)]
+                 border-r-6 border-b-6
                  rounded-lg overflow-hidden shadow-sm hover:shadow-xl
-                 transition-all duration-200 hover:-translate-y-1"
+                 transition-all duration-200 hover:-translate-y-1 "
     >
       {/* Imagen / placeholder */}
-      <div className="h-40 bg-[var(--rojo-oscuro)]/10 flex items-center justify-center overflow-hidden">
+      <div className="h-40 bg-[var(--rojo-oscuro)]/10 flex items-center justify-center overflow-hidden border-[var(--cafe)] border-b-2">
         {proyecto.imagen ? (
           <img
             src={proyecto.imagen}
@@ -60,11 +61,9 @@ const CardProyecto = ({ proyecto, onClick }: CardProyectoProps) => {
         </p>
 
         {/* Footer */}
-        <div className="flex items-center justify-between mt-4 pt-3 border-t border-[var(--cafe)]/10">
-          <span className="text-xs text-[var(--cafe)]/60">
-            ❤️ {proyecto.popularidad}
-          </span>
-          <span className="text-xs font-semibold text-[var(--rojo)] group-hover:underline">
+        <div className="btn flex items-end justify-between mt-4 pt-3 border-t border-[var(--cafe)]/10">
+
+          <span className="btn-tapa text-xs font-semibold text-[var(--rojo)] group-hover:underline">
             Ver más →
           </span>
         </div>

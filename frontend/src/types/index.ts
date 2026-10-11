@@ -22,6 +22,34 @@ export interface Proyecto {
   imagen: string | null;
 }
 
+// ─── Proyecto (ya lo tienes, agrega estado) ───
+export type EstadoProyecto = 'Borrador' | 'En revisión' | 'Publicado' | 'Archivado';
+
+export interface ProyectoDashboard {
+  id: number;
+  titulo: string;
+  areaTematica: string;
+  estado: EstadoProyecto;
+  actualizadoEn: string;   // ISO date
+}
+
+// ─── Actividad ───
+export interface Actividad {
+  id: number;
+  tipo: 'creado' | 'enviado' | 'publicado' | 'actualizado';
+  titulo: string;          // "Proyecto enviado a revisión"
+  descripcion: string;     // nombre del proyecto
+  fecha: string;
+}
+
+
+// ─── Estadísticas ───
+export interface EstadisticasDashboard {
+  totalProyectos: number;
+  borradores: number;
+  enRevision: number;
+  publicados: number;
+}
 // ─── Servicio (para CardService) ───
 export interface Servicio {
   id: number;
@@ -121,4 +149,6 @@ export interface AuthResponse {
 }
 
 export type OrdenFiltro = 'recientes' | 'populares' | 'alfabetico';
+
+
 
