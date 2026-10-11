@@ -13,6 +13,15 @@ from app.services.auth_service import (
     registrar_usuario,
 )
 
+from app.schemas.recuperacion_acceso import (
+    RecuperacionAccesoConfirmacion,
+    RecuperacionAccesoMensaje,
+)
+from app.services.recuperacion_acceso_service import (
+    restablecer_password,
+)
+
+
 
 router = APIRouter(
     prefix="/auth",
@@ -45,4 +54,23 @@ def login(
     return TokenResponse(
         access_token=token,
         token_type="bearer",
+    )
+
+
+@router.post(
+    "/restablecer-password",
+    response_model=RecuperacionAccesoMensaje,
+)
+def restablecer_contrasena(
+    datos: RecuperacionAccesoConfirmacion,
+    db: Session = Depends(get_db),
+):
+    restablecer_password(
+        db=db,
+        token=datos.token,
+        nueva_password=datos.nueva_password,
+    )
+
+    return RecuperacionAccesoMensaje(
+        mensaje="Contraseña actualizada correctamente"
     )
