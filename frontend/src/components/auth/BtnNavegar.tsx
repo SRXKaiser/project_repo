@@ -3,7 +3,8 @@ interface BtnNavegarProps {
   pasoTotal: number;
   onAtras: () => void;
   onSiguiente: () => void;
-  textoFinal?: string;   // por defecto "CREAR CUENTA"
+  textoFinal?: string; // por defecto "CREAR CUENTA"
+  cargando?: boolean;
 }
 
 const BtnNavegar = ({
@@ -12,6 +13,7 @@ const BtnNavegar = ({
   onAtras,
   onSiguiente,
   textoFinal = 'CREAR CUENTA',
+  cargando = false,
 }: BtnNavegarProps) => {
   return (
     <div className="flex flex-row gap-2 w-72 mt-4">
@@ -19,10 +21,12 @@ const BtnNavegar = ({
         <button
           type="button"
           onClick={onAtras}
+          disabled={cargando} 
           className="btn btn-ng flex-1 rounded-xl
                      border-2 border-[var(--rosita)]
                      text-[var(--rosita)] font-semibold
-                     hover:bg-[var(--rosita)]/10 transition"
+                     hover:bg-[var(--rosita)]/10 transition
+                     disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <span className="btn-tapa">← REGRESAR</span>
         </button>
@@ -37,8 +41,15 @@ const BtnNavegar = ({
           <span className="btn-tapa">SIGUIENTE →</span>
         </button>
       ) : (
-        <button type="submit" className="btn btn-ng flex-1">
-          <span className="btn-tapa">{textoFinal}</span>
+        <button
+          type="submit"
+          disabled={cargando}        // ← deshabilitar mientras carga
+          className="btn btn-ng flex-1
+                     disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          <span className="btn-tapa">
+            {cargando ? 'CREANDO...' : textoFinal}
+          </span>
         </button>
       )}
     </div>

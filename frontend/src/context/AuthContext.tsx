@@ -10,16 +10,8 @@ interface AuthContextValue {
   loading: boolean;
 }
 
-// ─── Contexto con tipo ───
+// ─── Contexto ───
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
-
-// ─── Usuario mock temporal (quitar cuando haya backend) ───
-const USUARIO_MOCK: Usuario = {
-  id: 1,
-  name: 'Ana Martínez',
-  email: 'ana@itcj.edu.mx',
-  role: 'estudiante',
-};
 
 // ─── Provider ───
 interface AuthProviderProps {
@@ -27,11 +19,10 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-  // ⚠️ TEMPORAL: inicializamos con el mock para que el dashboard funcione
-  const [user, setUser] = useState<Usuario | null>(USUARIO_MOCK);
-  const [loading, setLoading] = useState(false);   // ← ya no está comentado
+  const [user, setUser] = useState<Usuario | null>(null);
+  const [loading, setLoading] = useState(true);   // ← true al inicio (mientras carga)
 
-  // ─── Recuperar usuario del localStorage (cuando tengas backend) ───
+  // ─── Recuperar usuario del localStorage al montar ───
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     const token = localStorage.getItem('token');
@@ -40,21 +31,22 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       try {
         setUser(JSON.parse(storedUser));
       } catch {
+        // JSON corrupto → limpiar
         localStorage.removeItem('user');
         localStorage.removeItem('token');
       }
     }
-    // ⚠️ NO ponemos el mock aquí porque ya está en useState
-    // Cuando tengas backend, cambia el useState inicial a `null` y descomenta el mock por defecto:
-    // else { setUser(USUARIO_MOCK); }
+    setLoading(false);
   }, []);
 
+  // ─── Login ───
   const login = (userData: Usuario, token: string) => {
     localStorage.setItem('user', JSON.stringify(userData));
     localStorage.setItem('token', token);
     setUser(userData);
   };
 
+  // ─── Logout ───
   const logout = () => {
     localStorage.removeItem('user');
     localStorage.removeItem('token');

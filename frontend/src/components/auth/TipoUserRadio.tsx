@@ -1,4 +1,4 @@
-type TipoUsuario = 'ESTUDIANTE' | 'EMPLEADO' | 'EXALUMNO' | '';
+type TipoUsuario = 'ESTUDIANTE' | 'DOCENTE' | 'EGRESADO' | '';
 
 interface Opcion {
   value: TipoUsuario;
@@ -14,8 +14,8 @@ interface TipoUsuarioRadioProps {
 
 const OPCIONES_DEFAULT: Opcion[] = [
   { value: 'ESTUDIANTE', label: 'ESTUDIANTE' },
-  { value: 'EMPLEADO', label: 'EMPLEADO' },
-  { value: 'EXALUMNO', label: 'EX-ALUMNO' },
+  { value: 'DOCENTE', label: 'DOCENTE' },
+  { value: 'EGRESADO', label: 'EGRESADO' },
 ];
 
 const TipoUsuarioRadio = ({

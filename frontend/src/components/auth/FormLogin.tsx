@@ -1,86 +1,136 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
-import AuthLayout from './AuthLayout';
+import { useNavigate, useLocation } from 'react-router-dom';
 import AuthHeader from './AuthHeader';
 import AuthFooter from './AuthFooter';
 import Input from '../Input';
+import { useAuth } from '../../context/AuthContext';
+import { authService } from '../../services/authService';
+import type { Usuario } from '../../types';
 
-
-const Login = () => {
+const FormLogin = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
+  const location = useLocation();
+  const { login } = useAuth();
+
+
+  const correoInicial = (location.state as { correo?: string })?.correo || '';
+  const [correo, setCorreo] = useState(correoInicial);
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [cargando, setCargando] = useState(false);
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const mensajeExito = (location.state as { mensaje?: string })?.mensaje;
+  const from = (location.state as { from?: string })?.from;
+
+  //ruta según el rol
+  const rutaPorRol = (usuario: Usuario): string => {
+ 
+    switch (usuario.tipo_usuario) {
+      case 'ESTUDIANTE':
+      case 'EGRESADO':
+        return '/dashboard-user';
+      case 'DOCENTE':
+        return '/dashboard-admin';
+      default:
+        return '/dashboard-user';
+    }
+  };
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!email || !password) {
+    if (!correo || !password) {
       setError('Todos los campos son obligatorios');
       return;
     }
 
+    setCargando(true);
     setError('');
-    console.log('Login:', { email, password });
-    // TODO: llamar a la API
-    // navigate('/dashboard');
+
+    try {
+      // 1. Login: obtiene el usuario (y guarda token + user en localStorage)
+      const usuario = await authService.login(correo, password);
+
+      // 2. Guardar en el contexto
+      const token = localStorage.getItem('token') || '';
+      login(usuario, token);
+
+      // 3. Redirección inteligente:
+      //    - Si venía de una página protegida → volver ahí
+      //    - Si no → ir al dashboard según su rol
+      const destino = from || rutaPorRol(usuario);
+      navigate(destino, { replace: true });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Error desconocido');
+    } finally {
+      setCargando(false);
+    }
   };
 
   return (
-    <AuthLayout>
-      <form
-        onSubmit={handleSubmit}
-        className="flex flex-col gap-4 items-center"
+    <form
+      onSubmit={handleSubmit}
+      className="flex flex-col gap-4 items-center"
+    >
+      <AuthHeader
+        titulo="Inicia Sesión"
+        subtitulo="¡Bienvenido! Ingresa tus datos para continuar"
+      />
+
+      {/* Mensaje de éxito (viene del registro) */}
+      {mensajeExito && (
+        <p className="text-xs text-green-600 text-center w-72
+                      bg-green-500/10 px-3 py-2 rounded-lg">
+          {mensajeExito}
+        </p>
+      )}
+
+      <Input
+        id="correo"
+        label="Correo"
+        type="email"
+        value={correo}
+        onChange={setCorreo}
+        placeholder="tu@correo.com"
+        autoComplete="email"
+        required
+      />
+
+      <Input
+        id="password"
+        label="Contraseña"
+        type="password"
+        value={password}
+        onChange={setPassword}
+        placeholder="•••••••••••"
+        autoComplete="current-password"
+        required
+      />
+
+      {error && (
+        <p className="text-xs text-[var(--rosita)] text-right w-72 mt-2">
+          {error}
+        </p>
+      )}
+
+      <button
+        type="submit"
+        disabled={cargando}
+        className="btn btn-ng mt-8 disabled:opacity-50"
       >
-        <AuthHeader
-          titulo="Inicia Sesión"
-          subtitulo="¡Bienvenido! Ingresa tus datos para continuar"
-        />
+        <span className="btn-tapa">
+          {cargando ? 'INGRESANDO...' : 'INICIAR SESIÓN'}
+        </span>
+      </button>
 
-        <Input
-          id="email"
-          label="Email"
-          type="email"
-          value={email}
-          onChange={setEmail}
-          placeholder="tu@correo.com"
-          autoComplete="email"
-          required
-        />
-
-        <Input
-          id="password"
-          label="Contraseña"
-          type="password"
-          value={password}
-          onChange={setPassword}
-          placeholder="•••••••••••"
-          autoComplete="current-password"
-          required
-        />
-
-        {error && (
-          <p className="text-xs text-[var(--rosita)] text-right w-72 mt-2">
-            {error}
-          </p>
-        )}
-
-        <button
-          type="submit"
-          className="btn btn-ng mt-8"
-        >
-          <span className="btn-tapa">INICIAR SESIÓN</span>
-        </button>
-
-        <AuthFooter
-          texto="¿No tienes cuenta?"
-          linkTexto="Regístrate"
-          linkTo="/register"
-        />
-      </form>
-    </AuthLayout>
+      <AuthFooter
+        texto="¿No tienes cuenta?"
+        linkTexto="Regístrate"
+        linkTo="/register"
+      />
+    </form>
   );
 };
 
-export default Login;
+export default FormLogin;

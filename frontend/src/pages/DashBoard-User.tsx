@@ -1,4 +1,5 @@
 import { useAuth } from '../context/AuthContext';
+import DashboardLayout from '../components/user-dashboard/DBLayout';
 import DashboardWelcome from '../components/user-dashboard/DBWelcome';
 import DashboardStats from '../components/user-dashboard/DBStats';
 import DashboardProjects from '../components/user-dashboard/DSProject';
@@ -9,7 +10,7 @@ import type {
   EstadisticasDashboard,
 } from '../types';
 
-// ─── Datos mock (después vendrán del backend) ───
+//Datos mock para mostrar las tarjetas en lo que hay infomracin real en la db
 const PROYECTOS_MOCK: ProyectoDashboard[] = [
   {
     id: 1,
@@ -72,11 +73,11 @@ const DashboardUser = () => {
   };
 
   // Primer nombre para la bienvenida
-  const primerNombre = user.name.split(' ')[0];
+  const primerNombre = user.nombre.split(' ')[0];
 
   return (
     <>
-      <DashboardWelcome nombre={primerNombre} />
+      <DashboardWelcome nombre={primerNombre} mensaje={''} />
       <DashboardStats stats={stats} />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

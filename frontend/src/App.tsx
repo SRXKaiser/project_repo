@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
+import ProtectedRoute from './components/ProtectedRoute';
 import Layout from './components/Layout';
 import LayoutAuth from './components/LayoutAuth';
 import Home from './pages/Home';
@@ -9,6 +10,8 @@ import Explorar from './pages/Explorar';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import DashboardUser from './pages/DashBoard-User';
+import DashboardAdmin from './pages/DashBoard-Admin';
+import DashboardLayout from './components/user-dashboard/DBLayout';
 // import './App.css'
 
 function App() {
@@ -27,6 +30,18 @@ function App() {
           <Route element={<LayoutAuth />}>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} /> 
+
+          </Route>
+
+          <Route
+            element={
+              <ProtectedRoute>
+                <DashboardLayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route path="/dashboard-user" element={<DashboardUser />} />
+            <Route path="/dashboard-admin" element={<DashboardAdmin />} />
           </Route>
           
           
