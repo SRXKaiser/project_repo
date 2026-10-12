@@ -2,9 +2,10 @@ import { Link } from 'react-router-dom';
 
 interface DashboardWelcomeProps {
   nombre: string;
+  mensaje: string;
 }
 
-const DashboardWelcome = ({ nombre }: DashboardWelcomeProps) => {
+const DashboardWelcome = ({ nombre, mensaje }: DashboardWelcomeProps) => {
   return (
     <section className="bg-[var(--rojo-oscuro)] text-[var(--bg)]
                         rounded-2xl p-6 md:p-8
@@ -14,6 +15,7 @@ const DashboardWelcome = ({ nombre }: DashboardWelcomeProps) => {
         <h2 className="font-pixel text-2xl md:text-3xl mb-2">
           Bienvenido, {nombre}
         </h2>
+        <h2> {mensaje} </h2>
         <p className="font-cuerpo text-sm md:text-base text-[var(--bg)]/80 leading-relaxed">
           Desde aquí puedes administrar tus proyectos, consultar su estado y dar
           seguimiento al proceso de revisión y publicación.

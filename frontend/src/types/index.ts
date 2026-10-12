@@ -1,14 +1,9 @@
-// ─── Opción de un dropdown ───
-export interface Opcion {
-  value: string;
-  label: string;
-}
 
 // ═══════════════════════════════════════════════════════════
 // TIPOS COMPARTIDOS DEL PROYECTO
 // ═══════════════════════════════════════════════════════════
 
-// ─── Proyecto ───
+// Proyecto
 export interface Proyecto {
   id: number;
   titulo: string;
@@ -16,13 +11,13 @@ export interface Proyecto {
   departamento: string;
   materia: string;
   palabrasClave: string[];
-  fecha: string;           // ISO: "2025-08-15"
+  fecha: string; //estandar: "2025-08-15"
   resumen: string;
   popularidad: number;
   imagen: string | null;
 }
 
-// ─── Proyecto (ya lo tienes, agrega estado) ───
+//Proyecto
 export type EstadoProyecto = 'Borrador' | 'En revisión' | 'Publicado' | 'Archivado';
 
 export interface ProyectoDashboard {
@@ -30,10 +25,10 @@ export interface ProyectoDashboard {
   titulo: string;
   areaTematica: string;
   estado: EstadoProyecto;
-  actualizadoEn: string;   // ISO date
+  actualizadoEn: string;//date
 }
 
-// ─── Actividad ───
+// Actividad
 export interface Actividad {
   id: number;
   tipo: 'creado' | 'enviado' | 'publicado' | 'actualizado';
@@ -43,14 +38,14 @@ export interface Actividad {
 }
 
 
-// ─── Estadísticas ───
+// Estadísticas
 export interface EstadisticasDashboard {
   totalProyectos: number;
   borradores: number;
   enRevision: number;
   publicados: number;
 }
-// ─── Servicio (para CardService) ───
+// Servicio (para CardService)
 export interface Servicio {
   id: number;
   titulo: string;
@@ -58,14 +53,14 @@ export interface Servicio {
   descripcion: string;
 }
 
-// ─── Razón de la caja azul (para BlueBox) ───
+// Razón de la caja azul (para BlueBox)
 export interface RazonCaja {
   id: number;
   texto: string;
   align: 'left' | 'right';
 }
 
-// ─── Filtros ───
+// Filtros de busqueda
 export interface Opcion {
   value: string;
   label: string;
@@ -80,7 +75,7 @@ export type TipoFiltro = 'text' | 'select' | 'multi' | 'date';
 
 export type ValorFiltro = string | string[] | RangoFecha;
 
-// ─── Estado interno del componente (TODO obligatorio) ───
+// Estado interno del componente (TODO obligatorio)
 export interface FiltrosProyecto {
   query: string;
   titulo: string;
@@ -92,7 +87,7 @@ export interface FiltrosProyecto {
   orden: OrdenFiltro;
 }
 
-// ─── Valores por defecto ───
+// Valores por defecto
 export const FILTROS_VACIOS: FiltrosProyecto = {
   query: '',
   titulo: '',
@@ -116,21 +111,21 @@ export interface FiltrosQuery {
   orden?: OrdenFiltro;
 }
 
-// ─── Resultados de búsqueda ───
+// Resultados de búsqueda
 export interface ResultadoProyectos {
   proyectos: Proyecto[];
   total: number;
 }
 
-// ─── Usuario (para AuthContext) ───
+// Usuario (para AuthContext) 
 export interface Usuario {
   id: number;
   name: string;
   email: string;
-  role:  'estudiante' | 'docente' | 'admin';
+  role:  'ESTUDIANTE' | 'DOCENTE' | 'EGRESADO';
 }
 
-// ─── Auth ───
+//
 export interface LoginCredentials {
   email: string;
   password: string;
@@ -151,4 +146,76 @@ export interface AuthResponse {
 export type OrdenFiltro = 'recientes' | 'populares' | 'alfabetico';
 
 
+//------------------PARA BASE DE DATOS
 
+export type TipoUsuario = 'ESTUDIANTE' | 'DOCENTE' | 'EGRESADO';
+
+//1. END POINT REGISTER
+export interface RegistroPayload {
+  nombre: string;
+  apellido_paterno: string;
+  apellido_materno: string;
+  correo: string;
+  password: string;
+  tipo_usuario: TipoUsuario;
+// Datos para quien seleccione estudiante
+  num_control?: string;
+  id_carrera?: number;
+  semestre?: number;
+  // empleado
+  num_empleado?: string;
+  id_departamento?: number;
+  //exalumno
+  anio_egreso?: number;
+}
+
+
+export interface RegistroResponse {
+  id: number;
+  nombre: string;
+  correo: string;
+  tipo_usuario: TipoUsuario;
+  mensaje?: string;
+}
+
+export interface ApiError {
+  detail?: string | { msg: string; loc: string[] }[];
+}
+
+//2. ENDPOINT DE DEPARTAMENTOS, PARA FILTRAR LA LISTA
+export interface Departamentos {
+  id_departamento: number;
+  nombre: string;
+  descripcion: string | null;
+}
+
+//3. LO MISMO PERO AHORA PARA LAS CARRERAS SI EL USUARIO ES ALUMNO
+export interface Carreras {
+   id_carrera: number;
+   nombre: string;
+   siglas: string;
+   //activa?: boolean;
+   id_departamento: number;
+}
+
+//-----------ESTO ES PARA EL MOMENTO EN QUE EL USUARIO HAGA LOGIN
+export type EstadoCuenta = 'ACTIVA' | 'INACTIVA' | 'SUSPENDIDA';
+
+export interface Usuario {
+  id_usuario: number;
+  nombre: string;
+  apellido_paterno: string;
+  apellido_materno: string;
+  correo: string;
+  tipo_usuario: TipoUsuario;
+  estado_cuenta: EstadoCuenta;
+  fecha_registro: string;         // ISO
+  ultimo_acceso: string;          // ISO
+  es_administrador: boolean;
+  departamentos_responsable: number[];
+}
+
+export interface LoginResponse {
+  access_token: string;
+  token_type: string;
+}

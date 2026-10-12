@@ -12,7 +12,7 @@ const AuthLayout = ({
   imagenAlt = 'Biblioteca digital',
 }: AuthLayoutProps) => {
   return (
-    <div className='<div className="flex h-screen w-full items-center justify-center p-6">'>
+    <div className="flex h-screen w-full items-center justify-center p-6">
          <section
       className="flex flex-col lg:flex-row
                 lg:p-8 m-6 lg:m-20 rounded-3xl

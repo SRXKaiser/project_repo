@@ -1,18 +1,38 @@
-import type { ReactNode } from "react";
-import { Navigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import type { ReactNode } from 'react';
+import { Navigate, useLocation } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 interface ProtectedRouteProps {
-    children: ReactNode;
+  children: ReactNode;
 }
 
 const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
-    const {user, loading} = useAuth();
+  const { user, loading } = useAuth();
+  const location = useLocation();
 
-    if (loading) return <div className="text-center py-10">Cargando</div>
-    if (!user) return <Navigate to="/login" replace />;
+  // Mientras el AuthContext verifica el localStorage → mostrar spinner
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="font-cuerpo text-[var(--cafe)]">Cargando...</p>
+      </div>
+    );
+  }
 
-    return children;
+  // Si no hay usuario → redirigir al login
+  // Se guarda la ruta actual en `state.from` para volver después del login
+  if (!user) {
+    return (
+      <Navigate
+        to="/login"
+        state={{ from: location.pathname + location.search }}
+        replace
+      />
+    );
+  }
+
+  // Si hay usuario → renderizar el contenido
+  return <>{children}</>;
 };
 
 export default ProtectedRoute;
