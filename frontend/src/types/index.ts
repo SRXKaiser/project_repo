@@ -118,7 +118,7 @@ export interface ResultadoProyectos {
 }
 
 // Usuario (para AuthContext) 
-export interface Usuario {
+export interface Usuario2 {
   id: number;
   name: string;
   email: string;

@@ -1,32 +1,43 @@
+
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:8000',
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000',
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 10000,
+  timeout: 15000,
 });
 
-//Interceptor de request: agrega el token JWT si existe
-api.interceptors.request.use( (config) => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  });
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token');
 
-// interceptor de response: maneja errores globales 401
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+
+  return config;
+});
+
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    // si el token expiró, se cierra sesion
-    if (error.response?.status === 401) {
+    const status = error.response?.status;
+    const url = error.config?.url || '';
+
+    const esEndpointPublico =
+      url.includes('/auth/login') ||
+      url.includes('/auth/register');
+
+    if (status === 401 && !esEndpointPublico) {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
-      window.location.href = '/login'; // lo redigirira al login para volver a acceder a su cuenta
+
+      if (window.location.pathname !== '/login') {
+        window.location.replace('/login');
+      }
     }
+
     return Promise.reject(error);
   }
 );

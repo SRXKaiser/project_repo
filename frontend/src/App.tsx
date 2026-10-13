@@ -41,7 +41,14 @@ function App() {
             }
           >
             <Route path="/dashboard-user" element={<DashboardUser />} />
-            <Route path="/dashboard-admin" element={<DashboardAdmin />} />
+            <Route
+              path="/dashboard-admin"
+              element={
+                <ProtectedRoute requiereAdmin>
+                  <DashboardAdmin />
+                </ProtectedRoute>
+              }
+            />
           </Route>
           
           

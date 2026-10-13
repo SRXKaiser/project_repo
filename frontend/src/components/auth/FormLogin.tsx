@@ -25,16 +25,11 @@ const FormLogin = () => {
 
   //ruta según el rol
   const rutaPorRol = (usuario: Usuario): string => {
- 
-    switch (usuario.tipo_usuario) {
-      case 'ESTUDIANTE':
-      case 'EGRESADO':
-        return '/dashboard-user';
-      case 'DOCENTE':
-        return '/dashboard-admin';
-      default:
-        return '/dashboard-user';
+    if (usuario.es_administrador) {
+      return '/dashboard-admin';
     }
+
+    return '/dashboard-user';
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {

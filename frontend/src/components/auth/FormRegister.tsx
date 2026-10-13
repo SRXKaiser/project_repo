@@ -82,7 +82,13 @@ const FormRegister = () => {
     const cargarCarreras = async () => {
       setCargandoCarreras(true);
       try {
+        //const data = await carrerasService.listar();
+        //setCarreras(data);
         const data = await carrerasService.listar();
+
+        console.log('CARRERAS RECIBIDAS:', data);
+        console.log('ES UN ARRAY:', Array.isArray(data));
+
         setCarreras(data);
       } catch (err) {
         console.error('Error cargando carreras:', err);

@@ -4,23 +4,24 @@ import { useAuth } from '../context/AuthContext';
 
 interface ProtectedRouteProps {
   children: ReactNode;
+  requiereAdmin?: boolean;
 }
 
-const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
+const ProtectedRoute = ({
+  children,
+  requiereAdmin = false,
+}: ProtectedRouteProps) => {
   const { user, loading } = useAuth();
   const location = useLocation();
 
-  // Mientras el AuthContext verifica el localStorage → mostrar spinner
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <p className="font-cuerpo text-[var(--cafe)]">Cargando...</p>
+        <p>Cargando...</p>
       </div>
     );
   }
 
-  // Si no hay usuario → redirigir al login
-  // Se guarda la ruta actual en `state.from` para volver después del login
   if (!user) {
     return (
       <Navigate
@@ -31,7 +32,10 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
     );
   }
 
-  // Si hay usuario → renderizar el contenido
+  if (requiereAdmin && !user.es_administrador) {
+    return <Navigate to="/dashboard-user" replace />;
+  }
+
   return <>{children}</>;
 };
 
